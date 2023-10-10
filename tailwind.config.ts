@@ -8,10 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      fontFamily: {
+        poppins: ["var(--font-poppins)", "Noto Sans", "sans-serif"],
+        "ocr-b-std": ["var(--font-ocr-b-std)", "monospace"],
+      },
+      colors: {
+        "digital-yellow": "#F6F617",
+        "rss3-blue": "#1477FB",
+        "rss3-grey": "#F3F7FA",
+        "index-charcoal": "#1F1F1F",
+        "index-grey": "#ECEAE6",
+        "index-mid-grey": "#767C83",
+        "index-light-grey": "#929292",
       },
     },
   },
