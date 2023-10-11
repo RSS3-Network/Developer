@@ -16,9 +16,11 @@
     "@mantine/core": "^7.1.2",
     "clsx": "^2.0.0",
     "connectkit": "^1.5.3",
+    "connectkit-next-siwe": "^0.2.0",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
+    "siwe": "^2.1.4",
     "viem": "^1.16.2",
     "wagmi": "^1.4.3"
   },

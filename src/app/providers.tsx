@@ -9,7 +9,8 @@ import {
 } from "@/lib/env";
 
 import { WagmiConfig, createConfig } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { ConnectKitProvider, getDefaultConfig, SIWESession } from "connectkit";
+import { siweClient } from "@/lib/siweClient";
 
 const config = createConfig(
   getDefaultConfig({
@@ -27,7 +28,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <MantineProvider>
       <WagmiConfig config={config}>
-        <ConnectKitProvider>{children}</ConnectKitProvider>
+        <siweClient.Provider
+          onSignIn={(session?: SIWESession) => console.log("onSignIn", session)}
+          onSignOut={() => console.log("onSignOut")}
+        >
+          <ConnectKitProvider>{children}</ConnectKitProvider>
+        </siweClient.Provider>
       </WagmiConfig>
     </MantineProvider>
   );
