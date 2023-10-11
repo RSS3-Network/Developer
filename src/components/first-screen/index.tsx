@@ -24,7 +24,7 @@ export function FirstScreen() {
 
 export function FirstScreenBg() {
   return (
-    <div className="absolute left-0 top-0 -z-10 flex h-screen w-full items-center justify-center overflow-hidden mix-blend-multiply">
+    <div className="absolute left-0 top-0 pointer-events-none flex h-screen w-full items-center justify-center overflow-hidden mix-blend-multiply">
       <Image
         src={mobileBgImg}
         alt="Mobile Background"
