@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import ConnectButton from "@/components/ConnectButton";
 import { usePathname } from "next/navigation";
 
 export default function DashboardNav() {
@@ -42,10 +41,6 @@ export default function DashboardNav() {
         className={`w-sidebar transition-[width] fixed h-full flex flex-col`}
       >
         <div className="flex-1 min-h-0 flex flex-col">
-          <div className="mb-2 px-2 pt-3 pb-2">
-            <ConnectButton />
-          </div>
-
           <div className="px-3 space-y-[2px] text-zinc-500 flex-1 min-h-0 overflow-y-auto">
             {links.map((link) => {
               const active =

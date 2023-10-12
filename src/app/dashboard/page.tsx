@@ -26,7 +26,7 @@ export default function DashboardExample() {
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="text-2xl">RSS3 Apps</Title>
+        <Title className="!text-2xl">RSS3 Apps</Title>
         <Button
           size="xs"
           className="ml-4"

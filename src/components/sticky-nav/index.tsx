@@ -7,6 +7,7 @@ import React from "react";
 import { nav, Section } from "./nav";
 import styles from "./index.module.css";
 import Logo from "@/components/icons/Logo";
+import ConnectButton from "@/components/ConnectButton";
 
 type Item = {
   title: string;
@@ -28,10 +29,16 @@ const products = [
 
 export type StartBuildingBtnTheme = "blue-dark" | "white";
 
-export function StickyNav({ theme }: { theme: "light" | "dark" }) {
+export function StickyNav({
+  theme,
+  hideConnectButton,
+}: {
+  theme: "light" | "dark";
+  hideConnectButton?: boolean;
+}) {
   return (
-    <div className="absolute inset-x-0 top-0 z-20 my-5">
-      <div className="mx-auto box-content flex items-center px-8">
+    <div className="z-20 py-8">
+      <div className="mx-auto box-content flex items-center px-10">
         <Link
           href="/"
           className={clsx(
@@ -120,6 +127,11 @@ export function StickyNav({ theme }: { theme: "light" | "dark" }) {
             </li>
           </ul>
         </nav>
+        {!hideConnectButton && (
+          <div className="ml-auto">
+            <ConnectButton />
+          </div>
+        )}
       </div>
     </div>
   );
