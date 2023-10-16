@@ -1,8 +1,9 @@
 "use client";
 
 import { Card, Title, Button } from "@tremor/react";
+import Link from "next/link";
 
-export default function DashboardExample() {
+export default function DashboardIndex() {
   const keys = [
     {
       name: "Mammals",
@@ -26,7 +27,7 @@ export default function DashboardExample() {
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="!text-2xl">RSS3 Apps</Title>
+        <Title className="!text-2xl font-bold">RSS3 Apps</Title>
         <Button
           size="xs"
           className="ml-4"
@@ -39,9 +40,9 @@ export default function DashboardExample() {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {keys.map((key) => (
-          <Card className="flex items-center" key={key.name}>
-            {key.name}
-          </Card>
+          <Link href={`/dashboard/app/${key.name}`} key={key.name}>
+            <Card className="flex items-center">{key.name}</Card>
+          </Link>
         ))}
       </div>
     </>

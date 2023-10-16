@@ -23,7 +23,7 @@ export default function DashboardNav() {
       href: `/dashboard/analytics`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--chart-pie-line]",
-      text: "Analytics & Logs",
+      text: "Analytics",
     },
     {
       href: `/dashboard/finance`,
