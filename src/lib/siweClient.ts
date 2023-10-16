@@ -2,6 +2,6 @@
 import { configureClientSIWE } from "connectkit-next-siwe";
 
 export const siweClient = configureClientSIWE({
-  apiRoutePrefix: "https://gateway.dev.rss3.io/users/siwe",
+  apiRoutePrefix: "/api/gateway/users/siwe",
   statement: "Sign In With Ethereum to prove you control this wallet.",
 });
