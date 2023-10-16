@@ -1,7 +1,17 @@
 "use client";
 
 import { AreaChart, Title, DateRangePicker } from "@tremor/react";
-import { PasswordInput, Input } from "@mantine/core";
+import {
+  PasswordInput,
+  TextInput,
+  Button,
+  CopyButton,
+  Tooltip,
+  ActionIcon,
+  rem,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { IconCopy, IconCheck } from "@tabler/icons-react";
 
 export default function DashboardApp({
   params,
@@ -41,6 +51,12 @@ export default function DashboardApp({
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
+  const form = useForm({
+    initialValues: {
+      name: params.name,
+    },
+  });
+
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
@@ -67,10 +83,47 @@ export default function DashboardApp({
       <div className="my-4">
         <Title className="!text-2xl">Settings</Title>
       </div>
-      <Input.Wrapper label="Name">
-        <Input value={params.name} />
-      </Input.Wrapper>
-      <PasswordInput label="Key" value={"test"} disabled={true} />
+      <div className="space-y-4 w-96">
+        <form
+          className="space-y-2"
+          onSubmit={form.onSubmit((values) => console.log(values))}
+        >
+          <TextInput label="Name" {...form.getInputProps("name")} />
+          <Button type="submit">Save</Button>
+        </form>
+        <div className="space-y-2">
+          <PasswordInput
+            label="Key"
+            value={"test"}
+            disabled={true}
+            leftSectionPointerEvents="all"
+            leftSection={
+              <CopyButton value="test">
+                {({ copied, copy }) => (
+                  <Tooltip
+                    label={copied ? "Copied" : "Copy"}
+                    withArrow
+                    position="right"
+                  >
+                    <ActionIcon
+                      color={copied ? "teal" : "gray"}
+                      variant="subtle"
+                      onClick={copy}
+                    >
+                      {copied ? (
+                        <IconCheck style={{ width: rem(16) }} />
+                      ) : (
+                        <IconCopy style={{ width: rem(16) }} />
+                      )}
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </CopyButton>
+            }
+          />
+          <Button color="red">Regenerate Key</Button>
+        </div>
+      </div>
     </>
   );
 }
