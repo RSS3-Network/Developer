@@ -2,28 +2,11 @@
 
 import { Card, Title, Button } from "@tremor/react";
 import Link from "next/link";
+import { useGetAppList } from "@/queries/app";
 
 export default function DashboardIndex() {
-  const keys = [
-    {
-      name: "Mammals",
-    },
-    {
-      name: "Birds",
-    },
-    {
-      name: "Reptiles",
-    },
-    {
-      name: "Amphibians",
-    },
-    {
-      name: "Fishes",
-    },
-    {
-      name: "Invertebrates",
-    },
-  ];
+  const appList = useGetAppList();
+
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
@@ -41,7 +24,7 @@ export default function DashboardIndex() {
         </Link>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {keys.map((key) => (
+        {appList.data?.map((key) => (
           <Link href={`/dashboard/app/${key.name}`} key={key.name}>
             <Card className="flex items-center">{key.name}</Card>
           </Link>

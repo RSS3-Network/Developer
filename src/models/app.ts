@@ -10,3 +10,9 @@ export async function addApp(input: { name?: string }) {
     })
   ).json();
 }
+
+export async function getAppList() {
+  return (await (await fetch("/api/gateway/keys")).json()) as {
+    name: string;
+  }[];
+}
