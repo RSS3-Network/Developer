@@ -11,6 +11,7 @@ import {
 import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig, SIWESession } from "connectkit";
 import { siweClient } from "@/lib/siweClient";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const config = createConfig(
   getDefaultConfig({
@@ -24,6 +25,8 @@ const config = createConfig(
   }),
 );
 
+const queryClient = new QueryClient();
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <MantineProvider>
@@ -32,7 +35,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           onSignIn={(session?: SIWESession) => console.log("onSignIn", session)}
           onSignOut={() => console.log("onSignOut")}
         >
-          <ConnectKitProvider>{children}</ConnectKitProvider>
+          <ConnectKitProvider>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </ConnectKitProvider>
         </siweClient.Provider>
       </WagmiConfig>
     </MantineProvider>

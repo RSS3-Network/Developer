@@ -60,7 +60,19 @@ export default function DashboardApp({
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="!text-2xl font-bold">RSS3 App - {params.name}</Title>
+        <Title className="!text-2xl font-bold">Overview - {params.name}</Title>
+      </div>
+      <div className="mb-4 flex justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <div>
+            <Title className="!text-base">Requests</Title>
+            <Title className="!text-2xl font-medium">238243</Title>
+          </div>
+          <div>
+            <Title className="!text-base">Requests</Title>
+            <Title className="!text-2xl font-medium">238243</Title>
+          </div>
+        </div>
         <DateRangePicker
           className="max-w-sm"
           defaultValue={{
@@ -68,10 +80,6 @@ export default function DashboardApp({
             to: today,
           }}
         />
-      </div>
-      <div className="mb-4">
-        <Title className="!text-base">Requests</Title>
-        <Title className="!text-2xl font-medium">238243</Title>
       </div>
       <AreaChart
         className="h-72 mt-4"
