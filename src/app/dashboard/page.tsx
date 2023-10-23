@@ -25,7 +25,7 @@ export default function DashboardIndex() {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {appList.data?.map((key) => (
-          <Link href={`/dashboard/app/${key.name}`} key={key.name}>
+          <Link href={`/dashboard/app/${key.id}`} key={key.id}>
             <Card className="flex items-center">{key.name}</Card>
           </Link>
         ))}

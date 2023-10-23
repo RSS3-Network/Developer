@@ -12,55 +12,78 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
+import {
+  useDeleteApp,
+  useGetApp,
+  useRegenerateApp,
+  useUpdateApp,
+} from "@/queries/app";
+import { useEffect } from "react";
+
+const chartdata = [
+  {
+    date: "Jan 22",
+    SemiAnalysis: 2890,
+  },
+  {
+    date: "Feb 22",
+    SemiAnalysis: 2756,
+  },
+  {
+    date: "Mar 22",
+    SemiAnalysis: 3322,
+  },
+  {
+    date: "Apr 22",
+    SemiAnalysis: 3470,
+  },
+  {
+    date: "May 22",
+    SemiAnalysis: 3475,
+  },
+  {
+    date: "Jun 22",
+    SemiAnalysis: 3129,
+  },
+];
 
 export default function DashboardApp({
   params,
 }: {
   params: {
-    name: string;
+    id: string;
   };
 }) {
-  const chartdata = [
-    {
-      date: "Jan 22",
-      SemiAnalysis: 2890,
-    },
-    {
-      date: "Feb 22",
-      SemiAnalysis: 2756,
-    },
-    {
-      date: "Mar 22",
-      SemiAnalysis: 3322,
-    },
-    {
-      date: "Apr 22",
-      SemiAnalysis: 3470,
-    },
-    {
-      date: "May 22",
-      SemiAnalysis: 3475,
-    },
-    {
-      date: "Jun 22",
-      SemiAnalysis: 3129,
-    },
-  ];
+  const info = useGetApp(params.id);
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
 
   const form = useForm({
     initialValues: {
-      name: params.name,
+      name: info.data?.name,
     },
   });
+
+  useEffect(() => {
+    if (!form.values.name) {
+      form.setFieldValue("name", info.data?.name);
+    }
+  }, [info.data?.name]);
+
+  const updateApp = useUpdateApp();
+  const regenerateApp = useRegenerateApp();
+  const deleteApp = useDeleteApp();
 
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="!text-2xl font-bold">Overview - {params.name}</Title>
+        <Title className="!text-2xl font-bold">
+          Overview - {info.data?.name}
+        </Title>
       </div>
       <div className="mb-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
@@ -88,25 +111,37 @@ export default function DashboardApp({
         categories={["SemiAnalysis"]}
         colors={["blue"]}
       />
-      <div className="my-4">
-        <Title className="!text-2xl">Settings</Title>
+      <div className="mb-2 mt-8">
+        <Title className="!text-2xl font-semibold">Settings</Title>
       </div>
-      <div className="space-y-4 w-96">
+      <div className="space-y-4">
         <form
           className="space-y-2"
-          onSubmit={form.onSubmit((values) => console.log(values))}
+          onSubmit={form.onSubmit((values) =>
+            updateApp.mutate({
+              id: params.id,
+              name: values.name,
+            }),
+          )}
         >
-          <TextInput label="Name" {...form.getInputProps("name")} />
-          <Button type="submit">Save</Button>
+          <TextInput
+            label="Name"
+            {...form.getInputProps("name")}
+            className="w-96"
+          />
+          <Button type="submit" loading={updateApp.isPending}>
+            Save
+          </Button>
         </form>
         <div className="space-y-2">
           <PasswordInput
+            className="w-96"
             label="Key"
-            value={"test"}
+            value={info.data?.key}
             disabled={true}
             leftSectionPointerEvents="all"
             leftSection={
-              <CopyButton value="test">
+              <CopyButton value={info.data?.key || ""}>
                 {({ copied, copy }) => (
                   <Tooltip
                     label={copied ? "Copied" : "Copy"}
@@ -129,8 +164,30 @@ export default function DashboardApp({
               </CopyButton>
             }
           />
-          <Button color="red">Regenerate Key</Button>
+          <Button
+            color="red"
+            onClick={() => regenerateApp.mutate(params.id)}
+            loading={regenerateApp.isPending}
+          >
+            Regenerate Key
+          </Button>
         </div>
+      </div>
+      <div className="mb-2 mt-8">
+        <Title className="!text-2xl font-semibold">Delete</Title>
+      </div>
+      <div className="space-y-2">
+        <p className="text-gray-500 text-sm">
+          Once you delete your app, there is no way to undo it. Please make sure
+          you are certain before proceeding.
+        </p>
+        <Button
+          color="red"
+          onClick={() => deleteApp.mutate(params.id)}
+          loading={deleteApp.isPending}
+        >
+          Delete
+        </Button>
       </div>
     </>
   );

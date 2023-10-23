@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addApp, getAppList } from "@/models/app";
+import {
+  addApp,
+  getAppList,
+  getApp,
+  updateApp,
+  deleteApp,
+  regenerateApp,
+} from "@/models/app";
 
 export function useAddApp() {
   const queryClient = useQueryClient();
@@ -23,3 +30,60 @@ export const useGetAppList = () => {
     },
   });
 };
+
+export const useGetApp = (id: string) => {
+  return useQuery({
+    queryKey: ["app", id],
+    queryFn: async () => {
+      return getApp(id);
+    },
+  });
+};
+
+export function useUpdateApp() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: Parameters<typeof updateApp>[0]) => {
+      return updateApp(input);
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["appList"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["app", variables.id],
+      });
+    },
+  });
+}
+
+export function useDeleteApp() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return deleteApp(id);
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["appList"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["app", variables],
+      });
+    },
+  });
+}
+
+export function useRegenerateApp() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return regenerateApp(id);
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["app", variables],
+      });
+    },
+  });
+}
