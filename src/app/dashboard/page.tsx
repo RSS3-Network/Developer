@@ -1,8 +1,9 @@
 "use client";
 
-import { Card, Title, Button } from "@tremor/react";
+import { Title, Button } from "@tremor/react";
 import Link from "next/link";
 import { useGetAppList } from "@/queries/app";
+import { LoadingOverlay } from "@mantine/core";
 
 export default function DashboardIndex() {
   const appList = useGetAppList();
@@ -23,12 +24,20 @@ export default function DashboardIndex() {
           </Button>
         </Link>
       </div>
-      <div className="grid grid-cols-4 gap-4">
-        {appList.data?.map((key) => (
-          <Link href={`/dashboard/app/${key.id}`} key={key.id}>
-            <Card className="flex items-center">{key.name}</Card>
-          </Link>
-        ))}
+      <div className="relative min-h-[100px]">
+        <LoadingOverlay
+          visible={appList.isLoading}
+          overlayProps={{ blur: 2 }}
+        />
+        <div className="grid grid-cols-4 gap-4">
+          {appList.data?.map((key) => (
+            <Link href={`/dashboard/app/${key.id}`} key={key.id}>
+              <div className="flex items-center border p-6 rounded-lg">
+                {key.name}
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );

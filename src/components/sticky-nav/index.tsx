@@ -37,7 +37,7 @@ export function StickyNav({
   hideConnectButton?: boolean;
 }) {
   return (
-    <div className="z-20 py-8">
+    <div className="z-20 py-5 border-b">
       <div className="mx-auto box-content flex items-center px-10">
         <Link
           href="/"

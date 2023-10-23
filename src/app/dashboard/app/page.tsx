@@ -18,7 +18,7 @@ export default function DashboardApp() {
 
   useEffect(() => {
     if (addApp.isSuccess) {
-      router.push(`/dashboard/app/${addApp.data.name}`);
+      router.push(`/dashboard/app/${addApp.data.id}`);
     }
   }, [addApp.isSuccess]);
 
@@ -37,7 +37,9 @@ export default function DashboardApp() {
           )}
         >
           <TextInput label="Name" {...form.getInputProps("name")} />
-          <Button type="submit">Add</Button>
+          <Button type="submit" loading={addApp.isPending}>
+            Add
+          </Button>
         </form>
       </div>
     </>
