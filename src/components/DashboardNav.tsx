@@ -29,10 +29,10 @@ export default function DashboardNav() {
       text: "Analytics",
     },
     {
-      href: `/dashboard/finance`,
+      href: `/dashboard/billing`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--bank-line]",
-      text: "Finance",
+      text: "Billing",
     },
   ];
 

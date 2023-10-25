@@ -24,27 +24,33 @@ import { useEffect } from "react";
 const chartdata = [
   {
     date: "Jan 22",
-    SemiAnalysis: 2890,
+    requests: 2890,
+    ru: 2890 * 1.2,
   },
   {
     date: "Feb 22",
-    SemiAnalysis: 2756,
+    requests: 2756,
+    ru: 2756 * 1,
   },
   {
     date: "Mar 22",
-    SemiAnalysis: 3322,
+    requests: 3322,
+    ru: 3322 * 0.8,
   },
   {
     date: "Apr 22",
-    SemiAnalysis: 3470,
+    requests: 3470,
+    ru: 3470 * 1.1,
   },
   {
     date: "May 22",
-    SemiAnalysis: 3475,
+    requests: 3475,
+    ru: 3475 * 1.2,
   },
   {
     date: "Jun 22",
-    SemiAnalysis: 3129,
+    requests: 3129,
+    ru: 3129 * 1,
   },
 ];
 
@@ -88,14 +94,19 @@ export default function DashboardApp({
             Details - {info.data?.name}
           </Title>
           <div className="mb-4 flex justify-between items-center">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <div>
                 <Title className="!text-base">Requests</Title>
-                <Title className="!text-2xl font-medium">238243</Title>
+                <Title className="!text-2xl font-medium">21432</Title>
               </div>
               <div>
-                <Title className="!text-base">Requests</Title>
-                <Title className="!text-2xl font-medium">238243</Title>
+                <div className="flex items-center">
+                  <Title className="!text-base">RU</Title>
+                  <Tooltip label="The RSS3 Unit is a computing unit that is directly used for billing.">
+                    <i className="icon-[mingcute--question-line] ml-1 text-sm text-zinc-600" />
+                  </Tooltip>
+                </div>
+                <Title className="!text-2xl font-medium">2143</Title>
               </div>
             </div>
             <DateRangePicker
@@ -110,8 +121,8 @@ export default function DashboardApp({
             className="h-72 mt-4"
             data={chartdata}
             index="date"
-            categories={["SemiAnalysis"]}
-            colors={["blue"]}
+            categories={["requests", "ru"]}
+            colors={["blue", "cyan"]}
           />
         </div>
         <div>

@@ -32,7 +32,7 @@ export default function DashboardIndex() {
         <div className="grid grid-cols-4 gap-4">
           {appList.data?.map((key) => (
             <Link href={`/dashboard/app/${key.id}`} key={key.id}>
-              <div className="flex items-center border p-6 rounded-lg">
+              <div className="flex items-center p-6 rounded-lg bg-blue-50">
                 {key.name}
               </div>
             </Link>
