@@ -1,9 +1,19 @@
+"use client";
+
 import ConnectButton from "@/components/ConnectButton";
 import { FirstScreenBg } from "@/components/first-screen";
 import { DESCRIPTION } from "@/lib/env";
 import { StickyNav } from "@/components/sticky-nav";
+import { useSIWE } from "connectkit";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { isSignedIn } = useSIWE();
+  const router = useRouter();
+  if (isSignedIn) {
+    router.push("/dashboard");
+  }
+
   return (
     <div className="h-full bg-rss3-blue text-white flex flex-col">
       <StickyNav theme="light" hideConnectButton={true} />

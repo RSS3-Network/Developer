@@ -1,11 +1,21 @@
+"use client";
+
 import DashboardNav from "@/components/DashboardNav";
 import { StickyNav } from "@/components/sticky-nav";
+import { useSIWE } from "connectkit";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isSignedIn } = useSIWE();
+  const router = useRouter();
+  if (!isSignedIn) {
+    router.push("/");
+  }
+
   return (
     <div className="bg-blue-50 min-h-full flex flex-col">
       <StickyNav theme="dark" />

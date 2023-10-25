@@ -1,6 +1,6 @@
 "use client";
 
-import { ConnectKitButton } from "connectkit";
+import { ConnectKitButton, useSIWE } from "connectkit";
 import { Button } from "@tremor/react";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,8 @@ export default function ConnectButton({
   className?: string;
   customText?: string;
 }) {
+  const { isSignedIn } = useSIWE();
+
   return (
     <div className="h-11">
       <ConnectKitButton.Custom>
@@ -21,7 +23,7 @@ export default function ConnectButton({
               className={cn("[&>span]:!text-base", className)}
               size="xl"
             >
-              {isConnected
+              {isConnected && isSignedIn
                 ? ensName || truncatedAddress
                 : customText || "Connect Wallet"}
             </Button>
