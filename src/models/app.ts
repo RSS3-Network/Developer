@@ -64,3 +64,25 @@ export async function regenerateApp(id?: string) {
     })
   ).json();
 }
+
+export async function getAppHistory(input: {
+  id: string;
+  ts_from: number;
+  ts_to: number;
+}) {
+  return (await (
+    await fetch(
+      `/api/gateway/ru/history/${input.id}?${new URLSearchParams({
+        ts_from: input.ts_from + "",
+        ts_to: input.ts_to + "",
+      })}`,
+      {
+        credentials: "include",
+      },
+    )
+  ).json()) as {
+    api_calls: number;
+    ru_used: number;
+    collected_at: number;
+  }[];
+}

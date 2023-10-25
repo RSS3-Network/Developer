@@ -6,6 +6,7 @@ import {
   updateApp,
   deleteApp,
   regenerateApp,
+  getAppHistory,
 } from "@/models/app";
 
 export function useAddApp() {
@@ -87,3 +88,14 @@ export function useRegenerateApp() {
     },
   });
 }
+
+export const useGetAppHistory = (
+  input: Parameters<typeof getAppHistory>[0],
+) => {
+  return useQuery({
+    queryKey: ["appHistory", input.id, input],
+    queryFn: async () => {
+      return getAppHistory(input);
+    },
+  });
+};

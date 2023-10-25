@@ -16,43 +16,11 @@ import { IconCopy, IconCheck } from "@tabler/icons-react";
 import {
   useDeleteApp,
   useGetApp,
+  useGetAppHistory,
   useRegenerateApp,
   useUpdateApp,
 } from "@/queries/app";
-import { useEffect } from "react";
-
-const chartdata = [
-  {
-    date: "Jan 22",
-    requests: 2890,
-    ru: 2890 * 1.2,
-  },
-  {
-    date: "Feb 22",
-    requests: 2756,
-    ru: 2756 * 1,
-  },
-  {
-    date: "Mar 22",
-    requests: 3322,
-    ru: 3322 * 0.8,
-  },
-  {
-    date: "Apr 22",
-    requests: 3470,
-    ru: 3470 * 1.1,
-  },
-  {
-    date: "May 22",
-    requests: 3475,
-    ru: 3475 * 1.2,
-  },
-  {
-    date: "Jun 22",
-    requests: 3129,
-    ru: 3129 * 1,
-  },
-];
+import { useEffect, useState } from "react";
 
 export default function DashboardApp({
   params,
@@ -85,6 +53,39 @@ export default function DashboardApp({
   const regenerateApp = useRegenerateApp();
   const deleteApp = useDeleteApp();
 
+  const appHistory = useGetAppHistory({
+    id: params.id,
+    ts_from: sevenDaysAgo.getTime(),
+    ts_to: today.getTime(),
+  });
+
+  const [chartData, setChartData] = useState<
+    {
+      date: string;
+      requests: number;
+      ru: number;
+    }[]
+  >([]);
+  const [totalRequests, setTotalRequests] = useState(0);
+  const [totalRu, setTotalRu] = useState(0);
+  useEffect(() => {
+    if (appHistory.data) {
+      setChartData(
+        appHistory.data
+          .map((item) => ({
+            date: new Date(item.collected_at).toLocaleDateString(),
+            requests: item.api_calls,
+            ru: item.ru_used,
+          }))
+          .reverse(),
+      );
+      setTotalRequests(
+        appHistory.data.reduce((acc, item) => acc + item.api_calls, 0),
+      );
+      setTotalRu(appHistory.data.reduce((acc, item) => acc + item.ru_used, 0));
+    }
+  }, [appHistory.data]);
+
   return (
     <>
       <LoadingOverlay visible={info.isLoading} overlayProps={{ blur: 2 }} />
@@ -97,7 +98,7 @@ export default function DashboardApp({
             <div className="flex items-center space-x-6">
               <div>
                 <Title className="!text-base">Requests</Title>
-                <Title className="!text-2xl font-medium">21432</Title>
+                <Title className="!text-2xl font-medium">{totalRequests}</Title>
               </div>
               <div>
                 <div className="flex items-center">
@@ -106,7 +107,7 @@ export default function DashboardApp({
                     <i className="icon-[mingcute--question-line] ml-1 text-sm text-zinc-600" />
                   </Tooltip>
                 </div>
-                <Title className="!text-2xl font-medium">2143</Title>
+                <Title className="!text-2xl font-medium">{totalRu}</Title>
               </div>
             </div>
             <DateRangePicker
@@ -119,7 +120,7 @@ export default function DashboardApp({
           </div>
           <AreaChart
             className="h-72 mt-4"
-            data={chartdata}
+            data={chartData}
             index="date"
             categories={["requests", "ru"]}
             colors={["blue", "cyan"]}
