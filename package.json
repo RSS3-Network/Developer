@@ -26,6 +26,7 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "siwe": "^2.1.4",
     "tailwind-merge": "^2.0.0",
     "viem": "^1.18.2",

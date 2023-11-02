@@ -12,7 +12,7 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig, SIWESession } from "connectkit";
 import { siweClient } from "@/lib/siweClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { mainnet } from "wagmi/chains";
+import { mainnet, sepolia } from "wagmi/chains";
 
 const config = createConfig(
   getDefaultConfig({
@@ -24,7 +24,8 @@ const config = createConfig(
     // appUrl: "https://family.co",
     // appIcon: "https://family.co/logo.png",
 
-    chains: [mainnet],
+    // TODO chains: [mainnet],
+    chains: [sepolia],
   }),
 );
 

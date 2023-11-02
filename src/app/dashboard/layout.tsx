@@ -4,6 +4,7 @@ import DashboardNav from "@/components/DashboardNav";
 import { StickyNav } from "@/components/sticky-nav";
 import { useSIWE } from "connectkit";
 import { useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 export default function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default function DashboardLayout({
 
   return (
     <div className="bg-blue-50 min-h-full flex flex-col">
+      <Toaster />
       <StickyNav theme="dark" />
       <div className="flex flex-1">
         <DashboardNav />
