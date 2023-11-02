@@ -12,7 +12,7 @@ export default function DashboardIndex() {
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
         <Title className="!text-2xl font-bold">RSS3 Apps</Title>
-        <Link href={`/dashboard/app`}>
+        <Link href={`/new`}>
           <Button
             size="xs"
             className="ml-4"
@@ -31,7 +31,7 @@ export default function DashboardIndex() {
         />
         <div className="grid grid-cols-4 gap-4">
           {appList.data?.map((key) => (
-            <Link href={`/dashboard/app/${key.id}`} key={key.id}>
+            <Link href={`/app/${key.id}`} key={key.id}>
               <div className="flex items-center p-6 rounded-lg bg-blue-50">
                 {key.name}
               </div>

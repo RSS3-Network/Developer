@@ -16,20 +16,26 @@ export default function DashboardNav() {
     withList?: boolean;
   }[] = [
     {
-      href: `/dashboard`,
+      href: `/`,
+      isActive: ({ href, pathname }) => href === pathname,
+      icon: "icon-[mingcute--home-6-line]",
+      text: "Home",
+    },
+    {
+      href: `/app`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--grid-line]",
       text: "RSS3 Apps",
       withList: true,
     },
     {
-      href: `/dashboard/analytics`,
+      href: `/analytics`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--chart-pie-line]",
       text: "Analytics",
     },
     {
-      href: `/dashboard/billing`,
+      href: `/billing`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--bank-line]",
       text: "Billing",
@@ -75,7 +81,7 @@ export default function DashboardNav() {
                 </Link>
                 {link.withList &&
                   appList.data?.map((app) => {
-                    const href = `/dashboard/app/${app.id}`;
+                    const href = `/app/${app.id}`;
                     const active = pathname === href;
                     return (
                       <Link

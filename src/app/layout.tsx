@@ -7,6 +7,9 @@ import Providers from "@/app/providers";
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import { TITLE, DESCRIPTION } from "@/lib/env";
+import DashboardNav from "@/components/DashboardNav";
+import { StickyNav } from "@/components/sticky-nav";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ["300", "400"],
@@ -53,7 +56,20 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <div className="bg-blue-50 min-h-full flex flex-col">
+          <Toaster />
+          <Providers>
+            <StickyNav theme="dark" />
+            <div className="flex flex-1">
+              <DashboardNav />
+              <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 bg-white w-full h-full overflow-y-auto p-8 relative">
+                  {children}
+                </div>
+              </div>
+            </div>
+          </Providers>
+        </div>
       </body>
     </html>
   );

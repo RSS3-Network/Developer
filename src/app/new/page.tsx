@@ -18,7 +18,7 @@ export default function DashboardApp() {
 
   useEffect(() => {
     if (addApp.isSuccess) {
-      router.push(`/dashboard/app/${addApp.data.id}`);
+      router.push(`/app/${addApp.data.id}`);
     }
   }, [addApp.isSuccess]);
 
