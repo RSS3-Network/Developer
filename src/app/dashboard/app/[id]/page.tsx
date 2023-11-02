@@ -1,6 +1,11 @@
 "use client";
 
-import { AreaChart, Title, DateRangePicker } from "@tremor/react";
+import {
+  AreaChart,
+  Title,
+  DateRangePicker,
+  DateRangePickerValue,
+} from "@tremor/react";
 import {
   LoadingOverlay,
   PasswordInput,
@@ -32,10 +37,14 @@ export default function DashboardApp({
   const info = useGetApp(params.id);
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   sevenDaysAgo.setHours(0, 0, 0, 0);
+
+  const [dateRangeValue, setDateRangeValue] = useState<DateRangePickerValue>({
+    from: sevenDaysAgo,
+    to: today,
+  });
 
   const form = useForm({
     initialValues: {
@@ -55,8 +64,8 @@ export default function DashboardApp({
 
   const appHistory = useGetAppHistory({
     id: params.id,
-    ts_from: sevenDaysAgo.getTime(),
-    ts_to: today.getTime(),
+    ts_from: (dateRangeValue.from || sevenDaysAgo).getTime(),
+    ts_to: (dateRangeValue.to || today).getTime(),
   });
 
   const [chartData, setChartData] = useState<
@@ -112,10 +121,8 @@ export default function DashboardApp({
             </div>
             <DateRangePicker
               className="max-w-sm"
-              defaultValue={{
-                from: sevenDaysAgo,
-                to: today,
-              }}
+              value={dateRangeValue}
+              onValueChange={setDateRangeValue}
             />
           </div>
           <AreaChart
