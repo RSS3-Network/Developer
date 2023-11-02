@@ -36,8 +36,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <MantineProvider>
       <WagmiConfig config={config}>
         <siweClient.Provider
-          onSignIn={(session?: SIWESession) => console.log("onSignIn", session)}
-          onSignOut={() => console.log("onSignOut")}
+          signOutOnAccountChange={false}
+          signOutOnNetworkChange={false}
         >
           <ConnectKitProvider>
             <QueryClientProvider client={queryClient}>

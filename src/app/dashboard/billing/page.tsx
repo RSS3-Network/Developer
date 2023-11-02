@@ -117,12 +117,34 @@ export default function DashboardIndex() {
   };
 
   // withdraw
-  // const { config: withdrawConfig } = usePrepareContractWrite({
-  //   address: billingContract,
-  //   abi: billingABI,
-  //   functionName: "deposit",
-  // })
-  // const { isLoading: isWithdrawLoading, isSuccess: isWithdrawSuccess, write: withdrawWrite } = useContractWrite(withdrawConfig)
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
+  const withdraw = async () => {
+    setWithdrawLoading(true);
+    const realValue = BigInt(withdrawValue) * BigInt(tokenTransfers);
+
+    if (realValue > billingBalance) {
+      toast.error(
+        "Withdraw failed: Please ensure that you have enough RSS3 tokens in your balance before proceeding.",
+      );
+    } else {
+      try {
+        const { hash } = await writeContract({
+          address: billingContract,
+          abi: billingABI,
+          functionName: "withdraw",
+          args: [BigInt(withdrawValue) * BigInt(tokenTransfers)],
+        });
+        await waitForTransaction({
+          hash,
+        });
+        billingRefetch();
+      } catch (error: any) {
+        toast.error("Withdraw failed: ", error);
+      }
+    }
+    withdrawClose();
+    setWithdrawLoading(false);
+  };
 
   return (
     <>
@@ -165,10 +187,16 @@ export default function DashboardIndex() {
           >
             <NumberInput
               label="Amount"
-              value={depositValue}
-              onChange={setDepositValue}
+              value={withdrawValue}
+              onChange={setWithdrawValue}
             />
-            <Button className="mt-4">Confirm</Button>
+            <Button
+              className="mt-4"
+              loading={withdrawLoading}
+              onClick={() => withdraw()}
+            >
+              Confirm
+            </Button>
           </Modal>
         </div>
         <div>
