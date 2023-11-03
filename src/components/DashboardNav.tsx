@@ -4,16 +4,19 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useGetAppList } from "@/queries/app";
+import { useAccount } from "wagmi";
+import { useModal } from "connectkit";
 
 export default function DashboardNav() {
   const links: {
     href: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     isActive: (ctx: { href: string; pathname: string | null }) => boolean;
     icon: React.ReactNode;
     text: string;
     lever?: number;
     withList?: boolean;
+    needLogin?: boolean;
   }[] = [
     {
       href: `/`,
@@ -27,23 +30,28 @@ export default function DashboardNav() {
       icon: "icon-[mingcute--grid-line]",
       text: "RSS3 Apps",
       withList: true,
+      needLogin: true,
     },
     {
       href: `/analytics`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--chart-pie-line]",
       text: "Analytics",
+      needLogin: true,
     },
     {
       href: `/billing`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--bank-line]",
       text: "Billing",
+      needLogin: true,
     },
   ];
 
+  const { address } = useAccount();
   const pathname = usePathname();
   const appList = useGetAppList();
+  const { setOpen } = useModal();
 
   return (
     <div className="w-sidebar transition-[width] relative flex-shrink-0 pt-6 border-r">
@@ -56,6 +64,15 @@ export default function DashboardNav() {
                 pathname,
                 href: link.href,
               });
+            if (link.needLogin) {
+              link.onClick = (e) => {
+                if (!address) {
+                  e.preventDefault();
+                  setOpen(true);
+                }
+                link.onClick?.(e);
+              };
+            }
             return (
               <>
                 <Link
@@ -80,6 +97,7 @@ export default function DashboardNav() {
                   <span className="truncate">{link.text}</span>
                 </Link>
                 {link.withList &&
+                  address &&
                   appList.data?.map((app) => {
                     const href = `/app/${app.id}`;
                     const active = pathname === href;

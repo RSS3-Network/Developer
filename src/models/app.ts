@@ -72,7 +72,7 @@ export async function getAppHistory(input: {
 }) {
   return (await (
     await fetch(
-      `/api/gateway/ru/history/${input.id}?${new URLSearchParams({
+      `/api/gateway/history/consumption/${input.id}?${new URLSearchParams({
         ts_from: input.ts_from + "",
         ts_to: input.ts_to + "",
       })}`,
