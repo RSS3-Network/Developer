@@ -66,15 +66,17 @@ export async function regenerateApp(id?: string) {
 }
 
 export async function getAppHistory(input: {
-  id: string;
-  ts_from: number;
-  ts_to: number;
+  id?: string;
+  since: number;
+  until: number;
 }) {
   return (await (
     await fetch(
-      `/api/gateway/history/consumption/${input.id}?${new URLSearchParams({
-        ts_from: input.ts_from + "",
-        ts_to: input.ts_to + "",
+      `/api/gateway/history/consumption${
+        input.id ? `/${input.id}` : ""
+      }?${new URLSearchParams({
+        since: input.since + "",
+        until: input.until + "",
       })}`,
       {
         credentials: "include",
@@ -84,5 +86,27 @@ export async function getAppHistory(input: {
     api_calls: number;
     ru_used: number;
     collected_at: number;
+  }[];
+}
+
+export async function getDepositHistory(input: {
+  ts_from: number;
+  ts_to: number;
+}) {
+  return (await (
+    await fetch(
+      `/api/gateway/history/deposit?${new URLSearchParams({
+        ts_from: input.ts_from + "",
+        ts_to: input.ts_to + "",
+      })}`,
+      {
+        credentials: "include",
+      },
+    )
+  ).json()) as {
+    amount: number;
+    block_timestamp: number;
+    index: number;
+    tx_hash: string;
   }[];
 }
