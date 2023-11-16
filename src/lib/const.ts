@@ -5,9 +5,7 @@ export const tokenTransfers = 10 ** 18;
 
 export const billingABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
-  { inputs: [], name: "ErrInsufficientBalance", type: "error" },
   { inputs: [], name: "ErrInvalidArrayLength", type: "error" },
-  { inputs: [], name: "ErrWithdrawalTimeNotCome", type: "error" },
   {
     anonymous: false,
     inputs: [
@@ -133,13 +131,6 @@ export const billingABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "WITHDRAWAL_LOCK_PERIOD",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "address", name: "user", type: "address" }],
     name: "balanceOf",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -186,13 +177,6 @@ export const billingABI = [
   {
     inputs: [{ internalType: "bytes32", name: "role", type: "bytes32" }],
     name: "getRoleMemberCount",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "user", type: "address" }],
-    name: "getWithdrawalTiming",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -255,8 +239,11 @@ export const billingABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
-    name: "withdraw",
+    inputs: [
+      { internalType: "address[]", name: "users", type: "address[]" },
+      { internalType: "uint256[]", name: "amounts", type: "uint256[]" },
+    ],
+    name: "withdrawTokens",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -98,7 +98,7 @@ export default function DashboardNav() {
                 </Link>
                 {link.withList &&
                   address &&
-                  appList.data?.map((app) => {
+                  appList.data?.map?.((app) => {
                     const href = `/app/${app.id}`;
                     const active = pathname === href;
                     return (
