@@ -9,7 +9,7 @@ import {
 } from "@/lib/env";
 
 import { WagmiConfig, createConfig } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig, SIWESession } from "connectkit";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { siweClient } from "@/lib/siweClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet, sepolia } from "wagmi/chains";
