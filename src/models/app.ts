@@ -1,6 +1,6 @@
 export async function addApp(input: { name?: string }) {
   return await (
-    await fetch("/api/gateway/keys", {
+    await fetch("/api/gateway/key", {
       method: "POST",
       body: JSON.stringify(input),
       credentials: "include",
@@ -70,19 +70,21 @@ export async function getAppHistory(input: {
   since: number;
   until: number;
 }) {
-  return (await (
-    await fetch(
-      `/api/gateway/history/consumption${
-        input.id ? `/${input.id}` : ""
-      }?${new URLSearchParams({
-        since: input.since + "",
-        until: input.until + "",
-      })}`,
-      {
-        credentials: "include",
-      },
-    )
-  ).json()) as {
+  return (
+    await (
+      await fetch(
+        `/api/gateway/history/consumption${
+          input.id ? `/${input.id}` : ""
+        }?${new URLSearchParams({
+          since: input.since + "",
+          until: input.until + "",
+        })}`,
+        {
+          credentials: "include",
+        },
+      )
+    ).json()
+  ).history as {
     api_calls: number;
     ru_used: number;
     collected_at: number;

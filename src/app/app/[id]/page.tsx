@@ -76,7 +76,11 @@ export default function DashboardApp({
                 {...form.getInputProps("name")}
                 className="w-96"
               />
-              <Button type="submit" loading={updateApp.isPending}>
+              <Button
+                type="submit"
+                loading={updateApp.isPending}
+                className="bg-rss3-blue"
+              >
                 Save
               </Button>
             </form>
@@ -85,7 +89,6 @@ export default function DashboardApp({
                 className="w-96"
                 label="Key"
                 value={info.data?.key}
-                disabled={true}
                 leftSectionPointerEvents="all"
                 leftSection={
                   <CopyButton value={info.data?.key || ""}>
@@ -112,9 +115,9 @@ export default function DashboardApp({
                 }
               />
               <Button
-                color="red"
                 onClick={() => regenerateApp.mutate(params.id)}
                 loading={regenerateApp.isPending}
+                className="bg-red-600"
               >
                 Regenerate Key
               </Button>
@@ -131,9 +134,9 @@ export default function DashboardApp({
               sure you are certain before proceeding.
             </p>
             <Button
-              color="red"
               onClick={() => deleteApp.mutate(params.id)}
               loading={deleteApp.isPending}
+              className="bg-red-600"
             >
               Delete
             </Button>
