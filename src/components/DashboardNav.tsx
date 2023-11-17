@@ -64,8 +64,11 @@ export default function DashboardNav() {
                 pathname,
                 href: link.href,
               });
+            let newClick:
+              | ((e: React.MouseEvent<HTMLAnchorElement>) => void)
+              | undefined = undefined;
             if (link.needLogin) {
-              link.onClick = (e) => {
+              newClick = (e) => {
                 if (!address) {
                   e.preventDefault();
                   setOpen(true);
@@ -83,10 +86,10 @@ export default function DashboardNav() {
                     active
                       ? `bg-blue-200 font-medium text-rss3-blue`
                       : link.href || link.onClick
-                      ? "hover:bg-slate-200 hover:bg-opacity-50"
-                      : "opacity-80 cursor-default",
+                        ? "hover:bg-slate-200 hover:bg-opacity-50"
+                        : "opacity-80 cursor-default",
                   )}
-                  onClick={link.onClick}
+                  onClick={newClick || link.onClick}
                 >
                   <i
                     className={cn(link.icon, "text-xl")}
@@ -110,8 +113,8 @@ export default function DashboardNav() {
                           active
                             ? `bg-blue-200 font-medium text-rss3-blue`
                             : link.href || link.onClick
-                            ? "hover:bg-slate-200 hover:bg-opacity-50"
-                            : "opacity-80 cursor-default",
+                              ? "hover:bg-slate-200 hover:bg-opacity-50"
+                              : "opacity-80 cursor-default",
                         )}
                       >
                         <span className="truncate">{app.name}</span>

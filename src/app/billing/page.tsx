@@ -41,9 +41,11 @@ export default function DashboardIndex() {
   const {
     data: billingBalance = 0n,
     refetch: billingRefetch,
+    isLoading: billingLoading,
   }: {
     data: bigint | undefined;
     refetch: () => void;
+    isLoading: boolean;
   } = useContractRead({
     address: billingContract,
     abi: billingABI,
@@ -154,7 +156,9 @@ export default function DashboardIndex() {
         <div>
           <div className="text-base text-zinc-600">$RSS3 Balance</div>
           <div className="text-2xl font-bold">
-            {(billingBalance / BigInt(tokenTransfers)).toString()}
+            {billingLoading
+              ? "-"
+              : (billingBalance / BigInt(tokenTransfers)).toString()}
           </div>
         </div>
         <div className="space-x-4">
