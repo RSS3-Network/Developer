@@ -8,6 +8,9 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
   ],
+  corePlugins: {
+    preflight: false,
+  },
   theme: {
     transparent: "transparent",
     current: "currentColor",

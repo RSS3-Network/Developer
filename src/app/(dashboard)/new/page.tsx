@@ -37,11 +37,7 @@ export default function DashboardApp() {
           )}
         >
           <TextInput label="Name" {...form.getInputProps("name")} />
-          <Button
-            type="submit"
-            loading={addApp.isPending}
-            className="bg-rss3-blue"
-          >
+          <Button type="submit" loading={addApp.isPending}>
             Add
           </Button>
         </form>

@@ -1,4 +1,5 @@
 import "@/css/globals.css";
+import "@/css/preflight.css";
 import "@mantine/core/styles.css";
 
 import type { Metadata } from "next";
