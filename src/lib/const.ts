@@ -1,4 +1,4 @@
-export const billingContract = "0x5D2d3d7D719EB2f228F69b6B759bAC5C3660D9D1";
+export const billingContract = "0x0D87956500ecbC17A6FA63093B6830458A4aD000";
 
 export const tokenContract = "0xD892F9f0eea6F6a586aaba7ed895a6eb4Fa754d0";
 export const tokenTransfers = 10 ** 18;
@@ -112,6 +112,7 @@ export const billingABI = [
         name: "amount",
         type: "uint256",
       },
+      { indexed: true, internalType: "uint256", name: "fee", type: "uint256" },
     ],
     name: "TokensWithdrawn",
     type: "event",
@@ -242,6 +243,7 @@ export const billingABI = [
     inputs: [
       { internalType: "address[]", name: "users", type: "address[]" },
       { internalType: "uint256[]", name: "amounts", type: "uint256[]" },
+      { internalType: "uint256[]", name: "fees", type: "uint256[]" },
     ],
     name: "withdrawTokens",
     outputs: [],
