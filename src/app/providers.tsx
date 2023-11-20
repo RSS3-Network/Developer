@@ -6,6 +6,7 @@ import {
   TITLE,
   DESCRIPTION,
   ALCHEMY_ID,
+  TESTNET,
 } from "@/lib/env";
 
 import { WagmiConfig, createConfig } from "wagmi";
@@ -24,8 +25,7 @@ const config = createConfig(
     // appUrl: "https://family.co",
     // appIcon: "https://family.co/logo.png",
 
-    // TODO chains: [mainnet],
-    chains: [sepolia],
+    chains: [TESTNET ? sepolia : mainnet],
   }),
 );
 
