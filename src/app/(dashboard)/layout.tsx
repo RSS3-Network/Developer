@@ -2,6 +2,7 @@
 
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DashboardLayout({
   children,
@@ -10,9 +11,12 @@ export default function DashboardLayout({
 }) {
   const { address } = useAccount();
   const router = useRouter();
-  if (!address) {
-    router.push("/");
-  }
+
+  useEffect(() => {
+    if (!address) {
+      router.push("/");
+    }
+  }, [address]);
 
   return <>{children}</>;
 }
