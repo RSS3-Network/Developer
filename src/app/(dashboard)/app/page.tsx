@@ -11,7 +11,7 @@ export default function DashboardIndex() {
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="!text-2xl font-bold">RSS3 Apps</Title>
+        <Title className="!text-2xl font-bold">Apps</Title>
         <Link href={`/new`}>
           <Button
             size="xs"
@@ -20,7 +20,7 @@ export default function DashboardIndex() {
               <i className="icon-[mingcute--add-circle-line] mr-1 text-xl" />
             )}
           >
-            New RSS3 App
+            New App
           </Button>
         </Link>
       </div>

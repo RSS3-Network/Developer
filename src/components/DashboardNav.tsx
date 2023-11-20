@@ -28,7 +28,7 @@ export default function DashboardNav() {
       href: `/app`,
       isActive: ({ href, pathname }) => href === pathname,
       icon: "icon-[mingcute--grid-line]",
-      text: "RSS3 Apps",
+      text: "Apps",
       withList: true,
       needLogin: true,
     },

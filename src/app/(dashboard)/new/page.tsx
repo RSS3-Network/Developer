@@ -25,7 +25,7 @@ export default function DashboardApp() {
   return (
     <>
       <div className="mb-4 flex justify-between border-b pb-2">
-        <Title className="!text-2xl font-bold">New RSS3 App</Title>
+        <Title className="!text-2xl font-bold">New App</Title>
       </div>
       <div className="space-y-4 w-96">
         <form
