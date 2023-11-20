@@ -73,7 +73,7 @@ export default function HistoryChart({ id }: { id?: string }) {
           </div>
         </div>
         <DateRangePicker
-          className="max-w-sm"
+          className="max-w-sm [&_button]:bg-transparent"
           value={dateRangeValue}
           onValueChange={setDateRangeValue}
         />

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@tremor/react";
-import { LoadingOverlay, Modal, Table, NumberInput } from "@mantine/core";
+import { LoadingOverlay, Modal, NumberInput } from "@mantine/core";
 import { useContractRead, useAccount } from "wagmi";
 import {
   billingABI,
@@ -14,21 +14,17 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { writeContract, waitForTransaction } from "wagmi/actions";
+import { useQueryClient } from "@tanstack/react-query";
+import HistoryTable from "@/components/HistoryTable";
+import {
+  useGetHistoryDeposit,
+  useGetHistoryCollection,
+  useGetHistoryWithdrawal,
+  useRequestWithdrawal,
+  useGetCurrentWithdrawal,
+} from "@/queries/app";
 
 export default function DashboardIndex() {
-  const elements = [
-    { position: 6, mass: 12.011, symbol: "C", name: "Carbon" },
-    { position: 7, mass: 14.007, symbol: "N", name: "Nitrogen" },
-    { position: 39, mass: 88.906, symbol: "Y", name: "Yttrium" },
-    { position: 56, mass: 137.33, symbol: "Ba", name: "Barium" },
-    { position: 58, mass: 140.12, symbol: "Ce", name: "Cerium" },
-  ];
-  const rows = elements.map((element) => (
-    <Table.Tr key={element.name}>
-      <Table.Td>{element.position}</Table.Td>
-      <Table.Td>{element.name}</Table.Td>
-    </Table.Tr>
-  ));
   const { address } = useAccount();
   const [depositOpened, { open: depositOpen, close: depositClose }] =
     useDisclosure(false);
@@ -36,6 +32,9 @@ export default function DashboardIndex() {
     useDisclosure(false);
   const [depositValue, setDepositValue] = useState<string | number>(1000);
   const [withdrawValue, setWithdrawValue] = useState<string | number>(1000);
+  const queryClient = useQueryClient();
+  const requestWithdrawal = useRequestWithdrawal();
+  const currentWithdrawal = useGetCurrentWithdrawal();
 
   // get billing balance
   const {
@@ -110,8 +109,11 @@ export default function DashboardIndex() {
           hash,
         });
         billingRefetch();
+        queryClient.refetchQueries({
+          queryKey: ["historyDeposit"],
+        });
       } catch (error: any) {
-        toast.error("Deposit failed: ", error?.message);
+        toast.error("Deposit failed: ", error);
       }
     }
     depositClose();
@@ -130,16 +132,10 @@ export default function DashboardIndex() {
       );
     } else {
       try {
-        const { hash } = await writeContract({
-          address: billingContract,
-          abi: billingABI,
-          functionName: "withdraw",
-          args: [BigInt(withdrawValue) * BigInt(tokenTransfers)],
-        });
-        await waitForTransaction({
-          hash,
-        });
-        billingRefetch();
+        requestWithdrawal.mutate(+withdrawValue);
+        toast.success(
+          "Withdrawal request sent, please wait for the end of the current billing cycle, which can take up to 18 hours.",
+        );
       } catch (error: any) {
         toast.error("Withdraw failed: ", error);
       }
@@ -182,7 +178,12 @@ export default function DashboardIndex() {
               Confirm
             </Button>
           </Modal>
-          <Button onClick={withdrawOpen}>Withdraw</Button>
+          <Button onClick={withdrawOpen}>
+            Withdraw
+            {currentWithdrawal.data?.amount
+              ? ` (${currentWithdrawal.data.amount} pending)`
+              : ""}
+          </Button>
           <Modal
             opened={withdrawOpened}
             onClose={withdrawClose}
@@ -205,17 +206,21 @@ export default function DashboardIndex() {
         </div>
         <div>
           <div className="text-xl font-bold mb-2 border-b pb-2 mt-10">
-            Expense records
+            Collection Records
           </div>
-          <Table verticalSpacing="md" striped highlightOnHover>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Time</Table.Th>
-                <Table.Th>Amount</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-          </Table>
+          <HistoryTable requestFunction={useGetHistoryCollection} />
+        </div>
+        <div>
+          <div className="text-xl font-bold mb-2 border-b pb-2 mt-10">
+            Deposit Records
+          </div>
+          <HistoryTable requestFunction={useGetHistoryDeposit} />
+        </div>
+        <div>
+          <div className="text-xl font-bold mb-2 border-b pb-2 mt-10">
+            Withdrawal Records
+          </div>
+          <HistoryTable requestFunction={useGetHistoryWithdrawal} />
         </div>
       </div>
     </>

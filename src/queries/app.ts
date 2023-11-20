@@ -7,6 +7,11 @@ import {
   deleteApp,
   regenerateApp,
   getAppHistory,
+  getHistoryDeposit,
+  getHistoryCollection,
+  getHistoryWithdrawal,
+  requestWithdrawal,
+  getCurrentWithdrawal,
 } from "@/models/app";
 
 export function useAddApp() {
@@ -96,6 +101,62 @@ export const useGetAppHistory = (
     queryKey: ["appHistory", input.id, input],
     queryFn: async () => {
       return getAppHistory(input);
+    },
+  });
+};
+
+export const useGetHistoryDeposit = (
+  input: Parameters<typeof getHistoryDeposit>[0],
+) => {
+  return useQuery({
+    queryKey: ["historyDeposit", input],
+    queryFn: async () => {
+      return getHistoryDeposit(input);
+    },
+  });
+};
+
+export const useGetHistoryCollection = (
+  input: Parameters<typeof getHistoryCollection>[0],
+) => {
+  return useQuery({
+    queryKey: ["historyCollection", input],
+    queryFn: async () => {
+      return getHistoryCollection(input);
+    },
+  });
+};
+
+export const useGetHistoryWithdrawal = (
+  input: Parameters<typeof getHistoryWithdrawal>[0],
+) => {
+  return useQuery({
+    queryKey: ["historyWithdrawal", input],
+    queryFn: async () => {
+      return getHistoryWithdrawal(input);
+    },
+  });
+};
+
+export function useRequestWithdrawal() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (amount: number) => {
+      return requestWithdrawal(amount);
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["currentWithdrawal"],
+      });
+    },
+  });
+}
+
+export const useGetCurrentWithdrawal = () => {
+  return useQuery({
+    queryKey: ["currentWithdrawal"],
+    queryFn: async () => {
+      return getCurrentWithdrawal();
     },
   });
 };

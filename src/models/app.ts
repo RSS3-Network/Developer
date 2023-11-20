@@ -112,3 +112,91 @@ export async function getDepositHistory(input: {
     tx_hash: string;
   }[];
 }
+
+type HistoryResult = {
+  count: number;
+  cursor: number;
+  list: [
+    {
+      amount: number;
+      block_timestamp: number;
+      index: number;
+      tx_hash: string;
+    },
+  ];
+  page_current: number;
+  page_max: number;
+};
+
+export async function getHistoryDeposit(input: {
+  page?: number;
+  limit?: number;
+}) {
+  return (await (
+    await fetch(
+      `/api/gateway/history/deposit?${new URLSearchParams({
+        page: (input.page || 0) + "",
+        limit: (input.limit || 20) + "",
+      })}`,
+      {
+        credentials: "include",
+      },
+    )
+  ).json()) as HistoryResult;
+}
+
+export async function getHistoryCollection(input: {
+  page?: number;
+  limit?: number;
+}) {
+  return (await (
+    await fetch(
+      `/api/gateway/history/collection?${new URLSearchParams({
+        page: (input.page || 0) + "",
+        limit: (input.limit || 20) + "",
+      })}`,
+      {
+        credentials: "include",
+      },
+    )
+  ).json()) as HistoryResult;
+}
+
+export async function getHistoryWithdrawal(input: {
+  page?: number;
+  limit?: number;
+}) {
+  return (await (
+    await fetch(
+      `/api/gateway/history/withdrawal?${new URLSearchParams({
+        page: (input.page || 0) + "",
+        limit: (input.limit || 20) + "",
+      })}`,
+      {
+        credentials: "include",
+      },
+    )
+  ).json()) as HistoryResult;
+}
+
+export async function requestWithdrawal(amount: number) {
+  return await (
+    await fetch(`/api/gateway/request/withdraw?amount=${amount}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  ).json();
+}
+
+export async function getCurrentWithdrawal() {
+  return (await (
+    await fetch("/api/gateway/request/withdraw", {
+      credentials: "include",
+    })
+  ).json()) as {
+    amount: number;
+  };
+}
