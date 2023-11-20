@@ -9,7 +9,7 @@ const nextConfig = {
       {
         source: "/api/gateway/:path*",
         destination: `https://gateway.${
-          process.env.NODE_ENV === "production" ? "" : "dev."
+          !!process.env.NEXT_PUBLIC_TESTNET ? "dev." : ""
         }rss3.io/:path*`,
       },
     ];
