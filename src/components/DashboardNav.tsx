@@ -77,10 +77,9 @@ export default function DashboardNav() {
               };
             }
             return (
-              <>
+              <div key={link.text}>
                 <Link
                   href={link.href}
-                  key={link.text}
                   className={cn(
                     `flex pl-6 pr-4 h-12 items-center space-x-2 w-full transition-colors rounded-lg font-medium`,
                     active
@@ -121,7 +120,7 @@ export default function DashboardNav() {
                       </Link>
                     );
                   })}
-              </>
+              </div>
             );
           })}
         </div>
