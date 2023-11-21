@@ -1,22 +1,22 @@
 "use client";
 
-import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useSIWE } from "connectkit";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { address } = useAccount();
   const router = useRouter();
+  const { isSignedIn } = useSIWE();
 
   useEffect(() => {
-    if (!address) {
+    if (!isSignedIn) {
       router.push("/");
     }
-  }, [address]);
+  }, [isSignedIn]);
 
   return <>{children}</>;
 }

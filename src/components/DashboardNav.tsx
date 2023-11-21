@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useGetAppList } from "@/queries/app";
 import { useAccount } from "wagmi";
-import { useModal } from "connectkit";
+import { useModal, useSIWE } from "connectkit";
 
 export default function DashboardNav() {
   const links: {
@@ -52,6 +52,7 @@ export default function DashboardNav() {
   const pathname = usePathname();
   const appList = useGetAppList();
   const { setOpen } = useModal();
+  const { isSignedIn } = useSIWE();
 
   return (
     <div className="w-sidebar transition-[width] relative flex-shrink-0 pt-6 border-r">
@@ -69,7 +70,7 @@ export default function DashboardNav() {
               | undefined = undefined;
             if (link.needLogin) {
               newClick = (e) => {
-                if (!address) {
+                if (!isSignedIn) {
                   e.preventDefault();
                   setOpen(true);
                 }
@@ -99,7 +100,7 @@ export default function DashboardNav() {
                   <span className="truncate">{link.text}</span>
                 </Link>
                 {link.withList &&
-                  address &&
+                  isSignedIn &&
                   appList.data?.map?.((app) => {
                     const href = `/app/${app.id}`;
                     const active = pathname === href;
