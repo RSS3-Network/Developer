@@ -87,7 +87,7 @@ export async function getAppHistory(input: {
   ).history as {
     api_calls: number;
     ru_used: number;
-    collected_at: number;
+    consumption_date: number;
   }[];
 }
 

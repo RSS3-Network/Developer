@@ -41,7 +41,7 @@ export default function HistoryChart({ id }: { id?: string }) {
       setChartData(
         appHistory.data
           .map((item) => ({
-            date: new Date(item.collected_at).toLocaleDateString(),
+            date: new Date(item.consumption_date).toLocaleDateString(),
             requests: item.api_calls,
             ru: item.ru_used,
           }))
