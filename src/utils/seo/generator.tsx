@@ -7,7 +7,7 @@ export const website_jsonld: WithContext<WebSite> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: `${TITLE} - ${DESCRIPTION}`,
-  image: "https://rss3.io/images/og.png",
+  image: seo.image,
   description: seo.description,
   url: seo.url,
   sameAs: ["https://twitter.com/rss3_"],
