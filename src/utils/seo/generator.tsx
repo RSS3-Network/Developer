@@ -18,10 +18,11 @@ export const organization_jsonld: WithContext<Organization> = {
   "@type": "Organization",
   name: "RSS3",
   image: "https://rss3.io/images/og.png",
-  description: seo.description,
-  url: seo.url,
+  description:
+    "RSS3 structures open information for the next Twitter, Google, and OpenAI.",
+  url: "https://rss3.io",
   sameAs: ["https://twitter.com/rss3_"],
-  logo: seo.logo,
+  logo: "https://rss3.io/images/logo.svg",
 };
 
 export const metadata: Metadata = {
