@@ -7,10 +7,15 @@ import { ColorSchemeScript } from "@mantine/core";
 import Providers from "@/app/providers";
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
-import { TITLE, DESCRIPTION } from "@/lib/env";
 import DashboardNav from "@/components/DashboardNav";
 import { StickyNav } from "@/components/sticky-nav";
 import { Toaster } from "react-hot-toast";
+import {
+  organization_jsonld,
+  metadata as seoData,
+  website_jsonld,
+} from "@/utils/seo/generator";
+import Script from "next/script";
 
 const poppins = Poppins({
   weight: ["300", "400"],
@@ -23,25 +28,7 @@ const OcrBStd = localFont({
   variable: "--font-ocr-b-std",
 });
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  keywords: [
-    "blockchain",
-    "dapp",
-    "decentralization",
-    "ethereum",
-    "open information",
-    "open web",
-    "RSS",
-    "RSS3",
-    "search",
-    "web3",
-    "web activities",
-  ],
-  themeColor: "#ffffff",
-  icons: "/favicon.ico",
-};
+export const metadata: Metadata = seoData;
 
 export default function RootLayout({
   children,
@@ -54,6 +41,20 @@ export default function RootLayout({
       className={`${poppins.variable} ${OcrBStd.variable} scroll-smooth font-poppins`}
     >
       <head>
+        <Script
+          id="website_jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(website_jsonld) }}
+        ></Script>
+        <Script
+          id="organization_jsonld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organization_jsonld),
+          }}
+        ></Script>
         <ColorSchemeScript />
       </head>
       <body>

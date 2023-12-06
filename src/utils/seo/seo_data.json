@@ -1,0 +1,22 @@
+{
+  "description": "RSS3 Developer is the platform for develoeprs to manage their applications built on the RSS3 Network, the Open Information Layer that seamlessly integrating Open Information from the ever-growing open protocols.",
+  "language": "en-US",
+  "url": "https://developer.rss3.io",
+  "image": "https://rss3.io/images/og.png",
+  "logo": "https://rss3.io/images/logo.svg",
+  "twitter": "@rss3_",
+  "website": {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "RSS3",
+    "url": "https://rss3.io"
+  },
+  "organization": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "RSS3",
+    "url": "https://rss3.io/",
+    "logo": "https://rss3.io/images/logo.svg",
+    "sameAs": ["https://twitter.com/rss3_"]
+  }
+}
