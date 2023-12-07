@@ -45,9 +45,10 @@ export default function HistoryTable({
             <Table.Td>{deposit.amount}</Table.Td>
             <Table.Td>
               <Link
-                href={`https://${TESTNET ? "sepolia." : ""}etherscan.io/tx/${
-                  deposit.tx_hash
-                }`}
+                href={`https://sepolia.etherscan.io/tx/${deposit.tx_hash}`}
+                // href={`https://${TESTNET ? "sepolia." : ""}etherscan.io/tx/${
+                //   deposit.tx_hash
+                // }`}
                 className="underline"
                 target="_blank"
               >

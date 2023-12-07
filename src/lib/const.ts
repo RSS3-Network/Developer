@@ -1,6 +1,6 @@
-export const billingContract = "0x0D87956500ecbC17A6FA63093B6830458A4aD000";
+export const billingContract = "0xeff7b1a047f4a7ba0ac74c23459dbb39f8c47597";
 
-export const tokenContract = "0xD892F9f0eea6F6a586aaba7ed895a6eb4Fa754d0";
+export const tokenContract = "0x016aB32365d45B275891e349C877391F10862067";
 export const tokenTransfers = 10 ** 18;
 
 export const billingABI = [

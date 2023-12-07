@@ -25,7 +25,8 @@ const config = createConfig(
     // appUrl: "https://family.co",
     // appIcon: "https://family.co/logo.png",
 
-    chains: [TESTNET ? sepolia : mainnet],
+    chains: [sepolia],
+    // chains: [TESTNET ? sepolia : mainnet],
   }),
 );
 
