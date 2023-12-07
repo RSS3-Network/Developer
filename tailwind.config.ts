@@ -23,13 +23,9 @@ const config: Config = {
         sidebar: `240px`,
       },
       colors: {
-        "digital-yellow": "#F6F617",
         "rss3-blue": "#1477FB",
         "rss3-grey": "#F3F7FA",
-        "index-charcoal": "#1F1F1F",
-        "index-grey": "#ECEAE6",
-        "index-mid-grey": "#767C83",
-        "index-light-grey": "#929292",
+        "rss3-black": "#1F1F1F",
 
         // light mode
         tremor: {
@@ -69,7 +65,7 @@ const config: Config = {
             subtle: "#1e40af", // blue-800
             DEFAULT: "#3b82f6", // blue-500
             emphasis: "#60a5fa", // blue-400
-            inverted: "#030712", // gray-950
+            inverted: "#FFFFFF", // white
           },
           background: {
             muted: "#131A2B", // custom
@@ -86,9 +82,9 @@ const config: Config = {
           content: {
             subtle: "#4b5563", // gray-600
             DEFAULT: "#6b7280", // gray-500
-            emphasis: "#e5e7eb", // gray-200
+            emphasis: "#1F1F1F", // rss3-black
             strong: "#f9fafb", // gray-50
-            inverted: "#000000", // black
+            inverted: "#FFFFFF", // white
           },
         },
       },
