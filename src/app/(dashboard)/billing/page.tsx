@@ -135,6 +135,9 @@ export default function DashboardIndex() {
         requestWithdrawal.mutate(+withdrawValue);
         toast.success(
           "Withdrawal request sent, please wait for the end of the current billing cycle, which can take up to 18 hours.",
+          {
+            duration: 5000,
+          },
         );
       } catch (error: any) {
         toast.error("Withdraw failed: ", error);
