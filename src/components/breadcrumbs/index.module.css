@@ -1,0 +1,10 @@
+.item {
+  transition: all 0.3s ease-in-out;
+  color: var(--mantine-color-dimmed);
+  &[data-active="true"] {
+    color: var(--mantine-color-text);
+  }
+  &:hover {
+    color: var(--mantine-color-text);
+  }
+}

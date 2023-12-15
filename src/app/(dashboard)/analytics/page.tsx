@@ -1,17 +1,12 @@
-"use client";
+import { BreadcrumbsTitle } from "@/components/breadcrumbs"
+import HistoryChart from "@/components/charts/history"
 
-import { Title } from "@tremor/react";
-import HistoryChart from "@/components/HistoryChart";
+export default function Page() {
+	return (
+		<>
+			<BreadcrumbsTitle items={[{ href: "/analytics", label: "Analytics" }]} />
 
-export default function DashboardAnalytics() {
-  return (
-    <>
-      <div className="space-y-8">
-        <Title className="!text-2xl font-bold border-b pb-2 mb-4">
-          Analytics
-        </Title>
-        <HistoryChart />
-      </div>
-    </>
-  );
+			<HistoryChart />
+		</>
+	)
 }

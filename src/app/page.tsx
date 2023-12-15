@@ -1,22 +1,27 @@
-"use client";
+import { ConnectButton } from "@/components/connect-button"
+import { Title } from "@mantine/core"
 
-import { DESCRIPTION } from "@/lib/env";
-import ConnectButton from "@/components/ConnectButton";
-import { FirstScreenBg } from "@/components/first-screen";
-
-export default function DashboardIndex() {
-  return (
-    <div className="flex flex-col items-center justify-center border-b h-full relative overflow-hidden">
-      <FirstScreenBg />
-      <div className="flex flex-col items-center justify-center space-y-10">
-        <h1 className="text-6xl font-light text-center space-y-8 px-8">
-          {DESCRIPTION}
-        </h1>
-        <ConnectButton
-          customText="BUILD WITH RSS3 →"
-          className="rounded-[5px] border transition-colors"
-        />
-      </div>
-    </div>
-  );
+export default function Page() {
+	return (
+		<div
+			className="flex flex-col items-center justify-center space-y-10"
+			style={{
+				height:
+					"calc(100dvh - var(--app-shell-header-offset, 0px) - var(--app-shell-padding) - var(--app-shell-footer-offset, 0px) - var(--app-shell-padding))",
+				backgroundImage: "url(/images/home-bg.svg)",
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
+				backgroundPosition: "center",
+			}}
+		>
+			{/* <FirstScreenBg /> */}
+			<div className="flex flex-col items-center justify-center space-y-10">
+				<Title fw="300" order={1} size="3.75rem" ta="center">
+					Build with Billions of
+					<br /> Open Information
+				</Title>
+				<ConnectButton connectText="BUILD WITH RSS3 →" />
+			</div>
+		</div>
+	)
 }
