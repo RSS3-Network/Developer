@@ -54,7 +54,7 @@ export function HeaderNav() {
 									<Text tt="uppercase">{item.label}</Text>
 								</Group>
 							</HoverCardTarget>
-							<HoverCardDropdown>
+							<HoverCardDropdown p="sm">
 								<Stack gap="xs">
 									{item.dropdown.map((subItem) => {
 										return (

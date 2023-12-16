@@ -14,12 +14,11 @@ export function Header() {
 	return (
 		<AppShellHeader
 			withBorder={false}
-			classNames={{
-				header: classes.header,
-			}}
+			classNames={{ header: classes.header }}
+			px="lg"
 		>
 			<Group h="100%" justify="space-between">
-				<Group h="100%" px="md">
+				<Group h="100%">
 					<Burger
 						opened={opened}
 						onClick={() => setOpened(!opened)}
@@ -27,7 +26,7 @@ export function Header() {
 						size="sm"
 					/>
 					<Link href="/" style={{ color: "var(--mantine-color-text)" }}>
-						<Group h="100%" px="md" gap="xs">
+						<Group h="100%" gap="xs">
 							<Logo size={60} />
 							<Text span>Developer</Text>
 						</Group>

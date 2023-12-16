@@ -1,13 +1,14 @@
 "use client"
 
 import { DEFAULT_THEME, createTheme, mergeMantineTheme } from "@mantine/core"
-import { fontFamilies } from "./font"
+import { font, fontMonospace } from "./font"
 
 const themeOverride = createTheme({
-	fontFamily: fontFamilies,
+	fontFamily: font.style.fontFamily,
 	headings: {
-		fontFamily: fontFamilies,
+		fontFamily: font.style.fontFamily,
 	},
+	fontFamilyMonospace: fontMonospace.style.fontFamily,
 	colors: {
 		blue: [
 			"#e5f4ff",
@@ -35,6 +36,12 @@ const themeOverride = createTheme({
 		// ],
 	},
 	components: {
+		Button: {
+			defaultProps: {
+				ff: "monospace",
+				tt: "uppercase",
+			},
+		},
 		Modal: {
 			defaultProps: {
 				overlayProps: {

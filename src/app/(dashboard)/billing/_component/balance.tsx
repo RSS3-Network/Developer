@@ -28,7 +28,7 @@ import { useForm } from "@mantine/form"
 import { openConfirmModal } from "@mantine/modals"
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { valibotResolver } from "mantine-form-valibot-resolver"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Input, maxValue, minValue, number, object } from "valibot"
 import { formatUnits, parseUnits } from "viem"
 
@@ -186,19 +186,24 @@ function DepositModal({
 		deposit.contractWrite.write?.()
 	}
 
+	const handleClose = useCallback(() => {
+		form.reset()
+		onClose()
+	}, [])
+
 	useEffect(() => {
 		if (deposit.waitForTransaction.isSuccess) {
-			onClose()
+			handleClose()
 		}
 	}, [deposit.waitForTransaction.isSuccess])
 
 	return (
 		<Modal
 			opened={opened}
-			onClose={onClose}
+			onClose={handleClose}
 			title="Deposit $RSS3"
 			centered
-			closeOnClickOutside={false}
+			closeOnClickOutside={!form.isDirty()}
 		>
 			<form onSubmit={form.onSubmit(handleDeposit)}>
 				<BalanceInput
@@ -210,7 +215,14 @@ function DepositModal({
 				/>
 
 				<Group mt="md" justify="flex-end">
-					<Button variant="default" onClick={onClose}>
+					<Button
+						variant="default"
+						onClick={handleClose}
+						disabled={
+							deposit.contractWrite.isLoading ||
+							deposit.waitForTransaction.isLoading
+						}
+					>
 						Cancel
 					</Button>
 					<Button
@@ -295,9 +307,14 @@ function WithdrawModal({
 
 	const withdraw = useRequestWithdrawal()
 
+	const handleClose = useCallback(() => {
+		form.reset()
+		onClose()
+	}, [])
+
 	useEffect(() => {
 		if (withdraw.isSuccess) {
-			onClose()
+			handleClose()
 		}
 	}, [withdraw.isSuccess])
 
@@ -346,7 +363,7 @@ function WithdrawModal({
 	return (
 		<Modal
 			opened={opened}
-			onClose={onClose}
+			onClose={handleClose}
 			title={
 				<Group gap="xs">
 					<Text>Withdraw Deposited $RSS3</Text>
@@ -374,7 +391,7 @@ function WithdrawModal({
 				</Group>
 			}
 			centered
-			closeOnClickOutside={false}
+			closeOnClickOutside={!form.isDirty()}
 		>
 			<form onSubmit={form.onSubmit(handleWithdraw)}>
 				<BalanceInput
@@ -388,7 +405,15 @@ function WithdrawModal({
 				<Warning />
 
 				<Group mt="md" justify="flex-end">
-					<Button variant="default" onClick={onClose}>
+					<Button
+						variant="default"
+						onClick={handleClose}
+						disabled={
+							depositedRss3.isLoading ||
+							requestWithdrawal.isPending ||
+							withdraw.isPending
+						}
+					>
 						Cancel
 					</Button>
 					<Button

@@ -1,0 +1,20 @@
+.navbar {
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  );
+}
+
+
+.nav-link-root {
+  font-size: var(--mantine-font-size-xl);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
+}
+.nav-link-label {
+  font-size: var(--mantine-font-size-md);
+  text-transform: uppercase;
+}
+.nav-link-icon {
+  height: var(--mantine-font-size-md);
+  width: var(--mantine-font-size-md);
+}
