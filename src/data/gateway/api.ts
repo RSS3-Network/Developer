@@ -1,11 +1,33 @@
+import { HttpRequestError } from "viem"
 import { querystring } from "../utils/querystring"
 
-function ff(url: string, init?: RequestInit) {
+async function ff(url: string, init?: RequestInit) {
+	if (typeof window === "undefined") {
+		// import { cookies } from "next/headers"
+		const cookies = await import("next/headers").then((x) => x.cookies)
+		init = {
+			...init,
+			headers: {
+				...init?.headers,
+				cookie: cookies().toString(),
+			},
+		}
+		url = `http://localhost:3000${url}`
+	}
 	return fetch(url, init).then(async (res) => {
 		if (res.ok) {
 			return res
 		} else {
-			throw new Error(await res.text())
+			const text = await res.text()
+			throw new HttpRequestError({
+				body: {
+					response: text,
+				},
+				details: text || res.statusText,
+				headers: res.headers,
+				status: res.status,
+				url,
+			})
 		}
 	})
 }

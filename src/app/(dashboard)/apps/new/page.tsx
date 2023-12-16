@@ -34,7 +34,6 @@ export default function Page() {
 				},
 				{
 					onError: (error) => {
-						console.log(error)
 						showNotification({
 							color: "red",
 							title: "Error",
@@ -42,7 +41,6 @@ export default function Page() {
 						})
 					},
 					onSuccess: (data) => {
-						console.log({ data })
 						router.push(`/apps/${data.id}`)
 					},
 				},

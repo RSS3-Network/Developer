@@ -1,6 +1,10 @@
 "use client"
 
-import { useReassignKeySecret, useUpdateKey } from "@/data/gateway/hooks"
+import {
+	useGetKey,
+	useReassignKeySecret,
+	useUpdateKey,
+} from "@/data/gateway/hooks"
 import {
 	ActionIcon,
 	Box,
@@ -16,7 +20,6 @@ import {
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { openConfirmModal } from "@mantine/modals"
-import { showNotification } from "@mantine/notifications"
 import { IconCheck, IconCopy } from "@tabler/icons-react"
 import { valibotResolver } from "mantine-form-valibot-resolver"
 import { useCallback, useEffect } from "react"
@@ -24,20 +27,18 @@ import { type Input, minLength, object, string } from "valibot"
 
 export function Settings({
 	id,
-	name,
-	passkey,
 }: {
 	id: number
-	name?: string
-	passkey?: string
 }) {
+	const key = useGetKey({ id })
+
 	return (
 		<>
 			<Title order={3}>Settings</Title>
 
 			<Box maw={300}>
-				<NameForm id={id} name={name} />
-				<KeyForm id={id} passkey={passkey} />
+				<NameForm id={id} name={key.data?.name} />
+				<KeyForm id={id} passkey={key.data?.key} />
 			</Box>
 		</>
 	)

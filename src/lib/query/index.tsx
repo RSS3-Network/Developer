@@ -8,9 +8,33 @@ import {
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { useState } from "react"
+import { HttpRequestError } from "viem"
+
+const MAX_RETRIES = 3
+const HTTP_STATUS_TO_NOT_RETRY = [400, 401, 403, 404]
 
 const config: QueryClientConfig = {
 	defaultOptions: {
+		queries: {
+			retry: (failureCount, error) => {
+				if (failureCount > MAX_RETRIES) {
+					return false
+				}
+
+				if (
+					error instanceof HttpRequestError &&
+					HTTP_STATUS_TO_NOT_RETRY.includes(error.status ?? 0)
+				) {
+					return false
+				}
+
+				return true
+			},
+
+			// With SSR, we usually want to set some default staleTime
+			// above 0 to avoid refetching immediately on the client
+			staleTime: 60 * 1000,
+		},
 		mutations: {
 			onError(error) {
 				showNotification({

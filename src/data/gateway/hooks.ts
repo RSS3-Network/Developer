@@ -21,7 +21,7 @@ type Res<T extends (...arg: any[]) => any> = Awaited<ReturnType<T>>
 
 /// history
 
-function qk_getHistoryCollection(arg: Arg<typeof getHistoryCollection>) {
+export function qk_getHistoryCollection(arg: Arg<typeof getHistoryCollection>) {
 	return ["historyCollection", arg]
 }
 export function useGetHistoryCollection(arg: Arg<typeof getHistoryCollection>) {
@@ -31,7 +31,9 @@ export function useGetHistoryCollection(arg: Arg<typeof getHistoryCollection>) {
 	})
 }
 
-function qk_getHistoryConsumption(arg: Arg<typeof getHistoryConsumption>) {
+export function qk_getHistoryConsumption(
+	arg: Arg<typeof getHistoryConsumption>,
+) {
 	return ["historyConsumption", arg]
 }
 export function useGetHistoryConsumption(
@@ -43,7 +45,7 @@ export function useGetHistoryConsumption(
 	})
 }
 
-function qk_getHistoryDeposit(arg: Arg<typeof getHistoryDeposit>) {
+export function qk_getHistoryDeposit(arg: Arg<typeof getHistoryDeposit>) {
 	return ["historyDeposit", arg]
 }
 export function useGetHistoryDeposit(arg: Arg<typeof getHistoryDeposit>) {
@@ -53,7 +55,7 @@ export function useGetHistoryDeposit(arg: Arg<typeof getHistoryDeposit>) {
 	})
 }
 
-function qk_getHistoryWithdrawal(arg: Arg<typeof getHistoryWithdrawal>) {
+export function qk_getHistoryWithdrawal(arg: Arg<typeof getHistoryWithdrawal>) {
 	return ["historyWithdrawal", arg]
 }
 export function useGetHistoryWithdrawal(arg: Arg<typeof getHistoryWithdrawal>) {
@@ -106,7 +108,7 @@ export function useDeleteKey() {
 	})
 }
 
-function qk_getKey(arg: Arg<typeof getKey>) {
+export function qk_getKey(arg: Arg<typeof getKey>) {
 	return ["key", arg]
 }
 export function useGetKey(arg: Arg<typeof getKey>) {
@@ -185,7 +187,7 @@ export function useUpdateKey() {
 	})
 }
 
-function qk_getKeys() {
+export function qk_getKeys() {
 	return ["keys"]
 }
 export function useGetKeys() {
@@ -197,7 +199,7 @@ export function useGetKeys() {
 
 /// request
 
-function qk_getCurrentRequestWithdrawal() {
+export function qk_getCurrentRequestWithdrawal() {
 	return ["requestWithdrawal"]
 }
 export function useGetCurrentRequestWithdrawal() {
@@ -236,7 +238,7 @@ export function useRequestWithdrawal() {
 
 /// ru
 
-function qk_getRu() {
+export function qk_getRu() {
 	return ["ru"]
 }
 export function useGetRu() {
