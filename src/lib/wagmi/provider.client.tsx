@@ -8,10 +8,10 @@ import { ConnectKitProvider } from "connectkit"
 
 /////
 
+import { env } from "@/env.mjs"
+import { getDefaultConfig } from "connectkit"
 import { WagmiConfig, createConfig as createConfigV1 } from "wagmi"
 import { sepolia } from "wagmi/chains"
-import { getDefaultConfig } from "connectkit"
-import { env } from "@/env.mjs"
 import { siweClient } from "./siwe"
 
 const configV1 = createConfigV1(
