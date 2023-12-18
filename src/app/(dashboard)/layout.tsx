@@ -1,9 +1,9 @@
 "use client"
 
+import { Container } from "@mantine/core"
+import { useSIWE } from "connectkit"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { useSIWE } from "connectkit"
-import { Container } from "@mantine/core"
 
 export default function DashboardLayout({
 	children,
@@ -17,7 +17,7 @@ export default function DashboardLayout({
 		if (!isSignedIn) {
 			router.push("/")
 		}
-	}, [isSignedIn])
+	}, [isSignedIn, router])
 
 	return <Container>{children}</Container>
 }

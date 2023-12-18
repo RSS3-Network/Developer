@@ -140,7 +140,7 @@ export function useRss3Deposit(value: bigint) {
 				queryKey: ["historyDeposit"],
 			})
 		}
-	}, [waitForTransaction.isSuccess])
+	}, [queryClient, waitForTransaction.isSuccess])
 
 	return {
 		contractWrite,

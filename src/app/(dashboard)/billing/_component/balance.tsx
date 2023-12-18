@@ -86,6 +86,38 @@ function Actions() {
 	)
 }
 
+function ActionButton({
+	Modal,
+	children,
+}: {
+	Modal: ({
+		opened,
+		onClose,
+	}: {
+		opened: boolean
+		onClose: () => void
+	}) => React.ReactNode
+	children: React.ReactNode
+}) {
+	const [opened, setOpened] = useState(false)
+
+	const handleOpen = useCallback(() => {
+		setOpened(true)
+	}, [])
+
+	const handleClose = useCallback(() => {
+		setOpened(false)
+	}, [])
+
+	return (
+		<>
+			<Button onClick={handleOpen}>{children}</Button>
+
+			<Modal opened={opened} onClose={handleClose} />
+		</>
+	)
+}
+
 function DepositModal({
 	opened,
 	onClose,
@@ -131,69 +163,79 @@ function DepositModal({
 		typeof allowance.data !== "undefined" &&
 		requestedAmount > allowance.data
 
-	const handleDeposit = useCallback((values: Input<typeof formSchema>) => {
-		if (
-			typeof rss3.data === "undefined" ||
-			typeof allowance.data === "undefined"
-		) {
-			return
-		}
+	const handleDeposit = useCallback(
+		(values: Input<typeof formSchema>) => {
+			if (
+				typeof rss3.data === "undefined" ||
+				typeof allowance.data === "undefined"
+			) {
+				return
+			}
 
-		// approve
+			// approve
 
-		if (isExceededAllowance) {
-			// set allowance
-			openConfirmModal({
-				centered: true,
-				title: "One More Step: Approve Token Allowance",
-				children: (
-					<>
-						<Text>
-							Please increase your allowance to{" "}
-							<Text span ff="monospace" fw="bold">
-								<NumberFormatter value={values.amount} suffix=" RSS3" />
-							</Text>{" "}
-							.
-						</Text>
-						<Text>
-							Current allowance:{" "}
-							<Text span ff="monospace" fw="bold">
-								<NumberFormatter
-									value={formatUnits(allowance.data, rss3.tokenDecimals)}
-									suffix=" RSS3"
-								/>
+			if (isExceededAllowance) {
+				// set allowance
+				openConfirmModal({
+					centered: true,
+					title: "One More Step: Approve Token Allowance",
+					children: (
+						<>
+							<Text>
+								Please increase your allowance to{" "}
+								<Text span ff="monospace" fw="bold">
+									<NumberFormatter value={values.amount} suffix=" RSS3" />
+								</Text>{" "}
+								.
 							</Text>
-						</Text>
-						<Text size="sm" c="dimmed">
-							*Allowance is a predetermined limit set by you on how much $RSS3
-							can be managed by the RSS3 Billing contract.
-						</Text>
-					</>
-				),
-				labels: { confirm: "Approve", cancel: "Cancel" },
-				onConfirm: () => {
-					approve.contractWrite.write?.()
-				},
-			})
+							<Text>
+								Current allowance:{" "}
+								<Text span ff="monospace" fw="bold">
+									<NumberFormatter
+										value={formatUnits(allowance.data, rss3.tokenDecimals)}
+										suffix=" RSS3"
+									/>
+								</Text>
+							</Text>
+							<Text size="sm" c="dimmed">
+								*Allowance is a predetermined limit set by you on how much $RSS3
+								can be managed by the RSS3 Billing contract.
+							</Text>
+						</>
+					),
+					labels: { confirm: "Approve", cancel: "Cancel" },
+					onConfirm: () => {
+						approve.contractWrite.write?.()
+					},
+				})
 
-			return
-		}
+				return
+			}
 
-		// deposit
+			// deposit
 
-		deposit.contractWrite.write?.()
-	}, [])
+			deposit.contractWrite.write?.()
+		},
+		[
+			deposit,
+			allowance.data,
+			approve.contractWrite,
+			isExceededAllowance,
+			rss3.data,
+			rss3.tokenDecimals,
+		],
+	)
 
 	const handleClose = useCallback(() => {
 		form.reset()
 		onClose()
-	}, [])
+	}, [form, onClose])
 
 	useEffect(() => {
 		if (deposit.waitForTransaction.isSuccess) {
 			handleClose()
 		}
-	}, [deposit.waitForTransaction.isSuccess])
+	}, [deposit.waitForTransaction.isSuccess, handleClose])
 
 	return (
 		<Modal
@@ -243,30 +285,6 @@ function DepositModal({
 	)
 }
 
-function ActionButton({
-	Modal,
-	children,
-}: {
-	Modal: ({
-		opened,
-		onClose,
-	}: {
-		opened: boolean
-		onClose: () => void
-	}) => React.ReactNode
-	children: React.ReactNode
-}) {
-	const [opened, setOpened] = useState(false)
-
-	return (
-		<>
-			<Button onClick={() => setOpened(true)}>{children}</Button>
-
-			<Modal opened={opened} onClose={() => setOpened(false)} />
-		</>
-	)
-}
-
 function WithdrawModal({
 	opened,
 	onClose,
@@ -308,38 +326,41 @@ function WithdrawModal({
 	const handleClose = useCallback(() => {
 		form.reset()
 		onClose()
-	}, [])
+	}, [form, onClose])
 
 	useEffect(() => {
 		if (withdraw.isSuccess) {
 			handleClose()
 		}
-	}, [withdraw.isSuccess])
+	}, [handleClose, withdraw.isSuccess])
 
-	const handleWithdraw = useCallback((values: Input<typeof formSchema>) => {
-		openConfirmModal({
-			centered: true,
-			title: "Please confirm your action",
-			children: (
-				<>
-					<Text>
-						Please confirm that you want to withdraw{" "}
-						<Text span ff="monospace" fw="bold">
-							<NumberFormatter value={values.amount} suffix=" RSS3" />
-						</Text>{" "}
-						from your deposited $RSS3.
-					</Text>
-					<CurrentWithdrawalWarning
-						amount={currentRequestWithdrawal.data?.amount ?? 0}
-					/>
-				</>
-			),
-			labels: { confirm: "Withdraw", cancel: "Cancel" },
-			onConfirm: () => {
-				withdraw.mutate({ amount: values.amount })
-			},
-		})
-	}, [])
+	const handleWithdraw = useCallback(
+		(values: Input<typeof formSchema>) => {
+			openConfirmModal({
+				centered: true,
+				title: "Please confirm your action",
+				children: (
+					<>
+						<Text>
+							Please confirm that you want to withdraw{" "}
+							<Text span ff="monospace" fw="bold">
+								<NumberFormatter value={values.amount} suffix=" RSS3" />
+							</Text>{" "}
+							from your deposited $RSS3.
+						</Text>
+						<CurrentWithdrawalWarning
+							amount={currentRequestWithdrawal.data?.amount ?? 0}
+						/>
+					</>
+				),
+				labels: { confirm: "Withdraw", cancel: "Cancel" },
+				onConfirm: () => {
+					withdraw.mutate({ amount: values.amount })
+				},
+			})
+		},
+		[currentRequestWithdrawal.data?.amount, withdraw],
+	)
 
 	return (
 		<Modal
@@ -458,13 +479,13 @@ function CancelCurrentWithdrawalModal({
 	const handleClose = useCallback(() => {
 		cancelWithdraw.reset()
 		onClose()
-	}, [])
+	}, [cancelWithdraw, onClose])
 
 	useEffect(() => {
 		if (cancelWithdraw.isSuccess) {
 			handleClose()
 		}
-	}, [cancelWithdraw.isSuccess])
+	}, [cancelWithdraw.isSuccess, handleClose])
 
 	return (
 		<Modal

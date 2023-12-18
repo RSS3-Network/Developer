@@ -72,7 +72,7 @@ function NameForm({ id, name }: { id: number; name?: string }) {
 		if (!nameForm.values.name && name) {
 			nameForm.setFieldValue("name", name)
 		}
-	}, [name])
+	}, [name, nameForm])
 
 	const updateKey = useUpdateKey()
 
@@ -116,7 +116,7 @@ function KeyForm({ id, passkey }: { id: number; passkey?: string }) {
 				reassignKey.mutate({ id })
 			},
 		})
-	}, [id])
+	}, [id, reassignKey])
 
 	return (
 		<>

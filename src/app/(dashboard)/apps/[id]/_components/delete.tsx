@@ -44,7 +44,7 @@ export function Delete({ id }: { id: number }) {
 				)
 			},
 		})
-	}, [id, router])
+	}, [id, router, deleteKey])
 
 	return (
 		<>

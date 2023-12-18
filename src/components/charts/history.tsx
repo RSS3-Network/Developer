@@ -102,7 +102,7 @@ export default function HistoryChart({ id }: { id?: number }) {
 
 			<Skeleton visible={appHistory.isPending}>
 				<AreaChart
-					className="h-72 mt-4"
+					className="mt-4 h-72"
 					data={chartData}
 					index="date"
 					categories={["requests", "ru"]}
