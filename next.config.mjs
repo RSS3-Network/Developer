@@ -33,7 +33,6 @@ const nextConfig = {
 
 /** @type {Parameters<million['next']>[1]} */
 const millionConfig = {
-	auto: true,
 	auto: { rsc: true },
 }
 

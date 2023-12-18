@@ -5,7 +5,7 @@ import type {
 	useGetHistoryDeposit,
 	useGetHistoryWithdrawal,
 } from "@/data/gateway/hooks"
-import { LoadingOverlay, Skeleton, Table, Text } from "@mantine/core"
+import { Skeleton, Table, Text } from "@mantine/core"
 import { Pagination } from "@mantine/core"
 import Link from "next/link"
 import { useEffect, useState } from "react"

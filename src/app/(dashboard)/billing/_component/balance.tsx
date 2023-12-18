@@ -9,19 +9,19 @@ import {
 	useRss3Deposit,
 } from "@/data/contracts/hooks"
 import {
+	useCancelRequestWithdrawal,
 	useGetCurrentRequestWithdrawal,
 	useRequestWithdrawal,
 } from "@/data/gateway/hooks"
 import {
+	Anchor,
 	Button,
 	Divider,
 	Group,
 	Modal,
 	NumberFormatter,
-	Skeleton,
 	Stack,
 	Text,
-	Title,
 	Tooltip,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
@@ -37,45 +37,43 @@ export function Balance() {
 	const rss3 = useRss3Balance()
 
 	return (
-		<>
-			<Stack>
-				<Group>
-					<Stack gap="xs">
-						<Group gap="xs">
-							<Text c="dimmed">Deposited $RSS3</Text>
-							<Tooltip label="Deposited $RSS3 can be used to pay for API calls. You can withdraw your $RSS3 at any time.">
-								<Text c="dimmed">
-									<IconExclamationCircle />
-								</Text>
-							</Tooltip>
-						</Group>
-						<Text size="xl" fw="bold" ff="monospace">
-							<NumberFormatter
-								thousandSeparator
-								value={formatUnits(
-									depositedRss3.data ?? 0n,
-									depositedRss3.tokenDecimals,
-								)}
-							/>
-						</Text>
-					</Stack>
+		<Stack>
+			<Group>
+				<Stack gap="xs">
+					<Group gap="xs">
+						<Text c="dimmed">Deposited $RSS3</Text>
+						<Tooltip label="Deposited $RSS3 can be used to pay for API calls. You can withdraw your $RSS3 at any time.">
+							<Text c="dimmed">
+								<IconExclamationCircle />
+							</Text>
+						</Tooltip>
+					</Group>
+					<Text size="xl" fw="bold" ff="monospace">
+						<NumberFormatter
+							thousandSeparator
+							value={formatUnits(
+								depositedRss3.data ?? 0n,
+								depositedRss3.tokenDecimals,
+							)}
+						/>
+					</Text>
+				</Stack>
 
-					<Divider orientation="vertical" />
+				<Divider orientation="vertical" />
 
-					<Stack gap="xs">
-						<Text c="dimmed">$RSS3</Text>
-						<Text size="xl" fw="bold" ff="monospace">
-							<NumberFormatter
-								thousandSeparator
-								value={formatUnits(rss3.data ?? 0n, rss3.tokenDecimals)}
-							/>
-						</Text>
-					</Stack>
-				</Group>
+				<Stack gap="xs">
+					<Text c="dimmed">$RSS3</Text>
+					<Text size="xl" fw="bold" ff="monospace">
+						<NumberFormatter
+							thousandSeparator
+							value={formatUnits(rss3.data ?? 0n, rss3.tokenDecimals)}
+						/>
+					</Text>
+				</Stack>
+			</Group>
 
-				<Actions />
-			</Stack>
-		</>
+			<Actions />
+		</Stack>
 	)
 }
 
@@ -133,7 +131,7 @@ function DepositModal({
 		typeof allowance.data !== "undefined" &&
 		requestedAmount > allowance.data
 
-	const handleDeposit = (values: Input<typeof formSchema>) => {
+	const handleDeposit = useCallback((values: Input<typeof formSchema>) => {
 		if (
 			typeof rss3.data === "undefined" ||
 			typeof allowance.data === "undefined"
@@ -184,7 +182,7 @@ function DepositModal({
 		// deposit
 
 		deposit.contractWrite.write?.()
-	}
+	}, [])
 
 	const handleClose = useCallback(() => {
 		form.reset()
@@ -318,26 +316,7 @@ function WithdrawModal({
 		}
 	}, [withdraw.isSuccess])
 
-	const Warning = () => {
-		return (
-			currentRequestWithdrawal.data &&
-			currentRequestWithdrawal.data.amount > 0 && (
-				<Text c="red" size="sm" my="md">
-					<Text span fw="bold" ff="monospace">
-						<NumberFormatter
-							value={currentRequestWithdrawal.data.amount}
-							thousandSeparator
-							suffix=" RSS3"
-						/>
-					</Text>{" "}
-					is pending withdrawal. If you withdraw again now, the pending
-					withdrawal will be replaced by this one.
-				</Text>
-			)
-		)
-	}
-
-	const handleWithdraw = (values: Input<typeof formSchema>) => {
+	const handleWithdraw = useCallback((values: Input<typeof formSchema>) => {
 		openConfirmModal({
 			centered: true,
 			title: "Please confirm your action",
@@ -350,7 +329,9 @@ function WithdrawModal({
 						</Text>{" "}
 						from your deposited $RSS3.
 					</Text>
-					<Warning />
+					<CurrentWithdrawalWarning
+						amount={currentRequestWithdrawal.data?.amount ?? 0}
+					/>
 				</>
 			),
 			labels: { confirm: "Withdraw", cancel: "Cancel" },
@@ -358,7 +339,7 @@ function WithdrawModal({
 				withdraw.mutate({ amount: values.amount })
 			},
 		})
-	}
+	}, [])
 
 	return (
 		<Modal
@@ -402,7 +383,9 @@ function WithdrawModal({
 					{...form.getInputProps("amount")}
 				/>
 
-				<Warning />
+				<CurrentWithdrawalWarning
+					amount={currentRequestWithdrawal.data?.amount ?? 0}
+				/>
 
 				<Group mt="md" justify="flex-end">
 					<Button
@@ -429,6 +412,87 @@ function WithdrawModal({
 					</Button>
 				</Group>
 			</form>
+		</Modal>
+	)
+}
+
+function CurrentWithdrawalWarning({
+	amount,
+}: {
+	amount: number
+}) {
+	const [opened, setOpened] = useState(false)
+
+	return (
+		amount > 0 && (
+			<>
+				<Text c="yellow" size="sm" my="md">
+					<Text span fw="bold" ff="monospace">
+						<NumberFormatter value={amount} thousandSeparator suffix=" RSS3" />
+					</Text>{" "}
+					is pending withdrawal. If you withdraw again now, the pending
+					withdrawal will be replaced by this one. You can also{" "}
+					<Anchor c="red" onClick={() => setOpened(true)}>
+						cancel
+					</Anchor>{" "}
+					the pending withdrawal.
+				</Text>
+				<CancelCurrentWithdrawalModal
+					opened={opened}
+					onClose={() => setOpened(false)}
+				/>
+			</>
+		)
+	)
+}
+
+function CancelCurrentWithdrawalModal({
+	opened,
+	onClose,
+}: {
+	opened: boolean
+	onClose: () => void
+}) {
+	const cancelWithdraw = useCancelRequestWithdrawal()
+
+	const handleClose = useCallback(() => {
+		cancelWithdraw.reset()
+		onClose()
+	}, [])
+
+	useEffect(() => {
+		if (cancelWithdraw.isSuccess) {
+			handleClose()
+		}
+	}, [cancelWithdraw.isSuccess])
+
+	return (
+		<Modal
+			opened={opened}
+			onClose={handleClose}
+			title="Cancel Pending Withdrawal"
+			centered
+		>
+			<Text>Are you sure you want to cancel your pending withdrawal?</Text>
+
+			<Group mt="md" justify="flex-end">
+				<Button
+					variant="default"
+					onClick={handleClose}
+					disabled={cancelWithdraw.isPending}
+				>
+					Cancel
+				</Button>
+				<Button
+					color="red"
+					loading={cancelWithdraw.isPending}
+					onClick={() => {
+						cancelWithdraw.mutate()
+					}}
+				>
+					Cancel
+				</Button>
+			</Group>
 		</Modal>
 	)
 }

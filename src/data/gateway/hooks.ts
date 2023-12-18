@@ -236,6 +236,32 @@ export function useRequestWithdrawal() {
 	})
 }
 
+export function useCancelRequestWithdrawal() {
+	const queryClient = useQueryClient()
+	return useMutation({
+		mutationFn: () => {
+			return requestWithdraw({ amount: 0 })
+		},
+		onSuccess(data, variables) {
+			showNotification({
+				color: "teal",
+				title: "Success",
+				message: "Withdrawal request has been cancelled",
+			})
+			queryClient.setQueryData<Res<typeof getCurrentRequestWithdraw>>(
+				qk_getCurrentRequestWithdrawal(),
+				{ amount: 0 },
+			)
+			queryClient.invalidateQueries({
+				queryKey: qk_getCurrentRequestWithdrawal(),
+			})
+			queryClient.invalidateQueries({
+				queryKey: qk_getHistoryWithdrawal({}),
+			})
+		},
+	})
+}
+
 /// ru
 
 export function qk_getRu() {
