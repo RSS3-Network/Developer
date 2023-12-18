@@ -1,19 +1,12 @@
-import { BreadcrumbsTitle } from "@/components/breadcrumbs"
+"use client"
+
 import HistoryChart from "@/components/charts/history"
-import { getKey } from "@/data/gateway/api"
-import { qk_getKey } from "@/data/gateway/hooks"
 import { Group, Space } from "@mantine/core"
-import {
-	HydrationBoundary,
-	QueryClient,
-	dehydrate,
-} from "@tanstack/react-query"
-import { notFound } from "next/navigation"
 import { Delete } from "./_components/delete"
 import { Settings } from "./_components/settings"
 import { Title } from "./_components/title"
 
-export default async function Page({
+export default function Page({
 	params,
 }: {
 	params: {
@@ -21,34 +14,24 @@ export default async function Page({
 	}
 }) {
 	const id = Number(params.id)
-	// const info = useGetKey({ id })
 
-	try {
-		const queryClient = new QueryClient()
-
-		await queryClient.fetchQuery({
-			queryKey: qk_getKey({ id }),
-			queryFn: () => getKey({ id }),
-		})
-
-		return (
-			<HydrationBoundary state={dehydrate(queryClient)}>
+	return (
+		<>
+			<Group>
 				<Title id={id} />
+			</Group>
 
-				<Space h="lg" />
+			<Space h="lg" />
 
-				<HistoryChart id={id} />
+			<HistoryChart id={id} />
 
-				<Space h="lg" />
+			<Space h="lg" />
 
-				<Settings id={id} />
+			<Settings id={id} />
 
-				<Space h="lg" />
+			<Space h="lg" />
 
-				<Delete id={id} />
-			</HydrationBoundary>
-		)
-	} catch (error) {
-		notFound()
-	}
+			<Delete id={id} />
+		</>
+	)
 }

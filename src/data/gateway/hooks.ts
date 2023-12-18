@@ -73,11 +73,19 @@ export function useGenerateKey() {
 		mutationFn: (arg: Arg<typeof generateKey>) => {
 			return generateKey(arg)
 		},
-		onSuccess() {
+		onSuccess(data) {
 			showNotification({
 				color: "teal",
 				title: "Success",
 				message: "New app has been created",
+			})
+			queryClient.setQueryData<Res<typeof getKey>>(
+				qk_getKey({ id: data.id }),
+				data,
+			)
+			queryClient.invalidateQueries({ queryKey: qk_getKey({ id: data.id }) })
+			queryClient.setQueryData<Res<typeof getKeys>>(qk_getKeys(), (old) => {
+				return [...(old ?? []), data]
 			})
 			queryClient.invalidateQueries({ queryKey: qk_getKeys() })
 		},

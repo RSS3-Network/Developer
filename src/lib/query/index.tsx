@@ -2,11 +2,13 @@
 
 import { showNotification } from "@mantine/notifications"
 import {
+	QueryCache,
 	QueryClient,
 	type QueryClientConfig,
 	QueryClientProvider,
 } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { notFound } from "next/navigation"
 import { useState } from "react"
 import { HttpRequestError } from "viem"
 
@@ -14,6 +16,15 @@ const MAX_RETRIES = 3
 const HTTP_STATUS_TO_NOT_RETRY = [400, 401, 403, 404]
 
 const config: QueryClientConfig = {
+	queryCache: new QueryCache({
+		onError(error) {
+			if (error instanceof HttpRequestError) {
+				if (error.status === 404) {
+					notFound()
+				}
+			}
+		},
+	}),
 	defaultOptions: {
 		queries: {
 			retry: (failureCount, error) => {

@@ -22,8 +22,10 @@ import { useForm } from "@mantine/form"
 import { openConfirmModal } from "@mantine/modals"
 import { IconCheck, IconCopy } from "@tabler/icons-react"
 import { valibotResolver } from "mantine-form-valibot-resolver"
+import { notFound } from "next/navigation"
 import { useCallback, useEffect } from "react"
 import { type Input, minLength, object, string } from "valibot"
+import { HttpRequestError } from "viem"
 
 export function Settings({
 	id,
@@ -31,6 +33,14 @@ export function Settings({
 	id: number
 }) {
 	const key = useGetKey({ id })
+
+	if (key.error) {
+		if (key.error instanceof HttpRequestError) {
+			if (key.error.status === 404) {
+				notFound()
+			}
+		}
+	}
 
 	return (
 		<>
