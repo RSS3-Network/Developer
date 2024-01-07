@@ -1,6 +1,7 @@
 "use client"
 
 import { useGetHistoryConsumption } from "@/data/gateway/hooks"
+import { AreaChart } from "@mantine/charts"
 import {
 	Group,
 	LoadingOverlay,
@@ -8,11 +9,11 @@ import {
 	Skeleton,
 	Stack,
 	Text,
+	TextInput,
 	Tooltip,
 } from "@mantine/core"
 import { DatePickerInput } from "@mantine/dates"
 import { IconExclamationCircle } from "@tabler/icons-react"
-import { AreaChart } from "@tremor/react"
 import { useEffect, useState } from "react"
 
 export default function HistoryChart({ id }: { id?: number }) {
@@ -104,9 +105,11 @@ export default function HistoryChart({ id }: { id?: number }) {
 				<AreaChart
 					className="mt-4 h-72"
 					data={chartData}
-					index="date"
-					categories={["requests", "ru"]}
-					colors={["blue", "cyan"]}
+					dataKey="date"
+					series={[
+						{ name: "requests", color: "blue" },
+						{ name: "ru", color: "cyan" },
+					]}
 				/>
 			</Skeleton>
 		</Stack>

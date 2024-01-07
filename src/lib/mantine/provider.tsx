@@ -1,9 +1,8 @@
 import { MantineProvider as MantineProvider_ } from "@mantine/core"
 import { ModalsProvider } from "@mantine/modals"
+import { Notifications } from "@mantine/notifications"
 import { type PropsWithChildren } from "react"
-
 import { ColorSchemeSwitchIndicator } from "./color-scheme-switch"
-import { NotificationsProvider } from "./notifications"
 import { ScreenIndicator } from "./screen-indicator"
 import { theme } from "./theme"
 import { TitleIndicator } from "./title-indicator"
@@ -21,7 +20,8 @@ export function MantineProvider({ children }: PropsWithChildren<{}>) {
 	return (
 		<MantineProvider_ defaultColorScheme="auto" theme={theme}>
 			<ModalsProvider>
-				<NotificationsProvider>{children}</NotificationsProvider>
+				<Notifications />
+				{children}
 			</ModalsProvider>
 
 			<DevTools />

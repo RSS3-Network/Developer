@@ -1,5 +1,6 @@
 import { showNotification } from "@mantine/notifications"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect } from "react"
 import {
 	deleteKey,
 	generateKey,
@@ -199,10 +200,20 @@ export function qk_getKeys() {
 	return ["keys"]
 }
 export function useGetKeys() {
-	return useQuery({
+	const queryClient = useQueryClient()
+	const query = useQuery({
 		queryKey: qk_getKeys(),
 		queryFn: () => getKeys(),
 	})
+	useEffect(() => {
+		if (query.isSuccess && query.data) {
+			query.data.forEach((x) => {
+				queryClient.setQueryData<Res<typeof getKey>>(qk_getKey({ id: x.id }), x)
+			})
+		}
+	}, [query.data, query.isSuccess, queryClient])
+
+	return query
 }
 
 /// request
