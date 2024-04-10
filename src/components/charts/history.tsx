@@ -16,7 +16,7 @@ import { DatePickerInput } from "@mantine/dates"
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { useEffect, useState } from "react"
 
-export default function HistoryChart({ id }: { id?: number }) {
+export default function HistoryChart({ id }: { id?: string }) {
 	const sevenDaysAgo = new Date()
 	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 	sevenDaysAgo.setHours(0, 0, 0, 0)

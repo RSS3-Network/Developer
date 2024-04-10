@@ -3,18 +3,19 @@ import { MantineProvider } from "@/lib/mantine"
 import { MotionProvider } from "@/lib/motion"
 import { QueryProvider } from "@/lib/query"
 import { WagmiProvider } from "@/lib/wagmi"
+import { headers } from "next/headers"
 import { type PropsWithChildren } from "react"
 
 export function Providers({ children }: PropsWithChildren<{}>) {
 	return (
 		<MantineProvider>
-			<WagmiProvider>
-				<QueryProvider>
+			<QueryProvider>
+				<WagmiProvider cookie={headers().get("cookie")}>
 					<JotaiProvider>
 						<MotionProvider>{children}</MotionProvider>
 					</JotaiProvider>
-				</QueryProvider>
-			</WagmiProvider>
+				</WagmiProvider>
+			</QueryProvider>
 		</MantineProvider>
 	)
 }

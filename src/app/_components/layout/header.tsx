@@ -1,7 +1,7 @@
 "use client"
 
 import { ConnectButton } from "@/components/connect-button"
-import Logo from "@/components/icons/Logo"
+import Logo from "@/components/icons/logo"
 import { AppShellHeader, Burger, Group, Text } from "@mantine/core"
 import Link from "next/link"
 import { HeaderNav } from "./header-nav"
@@ -27,7 +27,7 @@ export function Header() {
 					/>
 					<Link href="/" style={{ color: "var(--mantine-color-text)" }}>
 						<Group h="100%" gap="xs">
-							<Logo size={60} />
+							<Logo size={30} />
 							<Text span>Developer</Text>
 						</Group>
 					</Link>

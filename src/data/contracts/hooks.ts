@@ -1,90 +1,93 @@
+import { rss3Chain } from "@/lib/wagmi/chain"
 import { showNotification } from "@mantine/notifications"
 import { useQueryClient } from "@tanstack/react-query"
 import { type SIWESession, useSIWE } from "connectkit"
 import { useEffect } from "react"
 import {
-	useContractRead,
-	useContractWrite,
-	usePrepareContractWrite,
-	useWaitForTransaction,
+	type Register,
+	useAccount,
+	useSwitchChain,
+	useWaitForTransactionReceipt,
 } from "wagmi"
-import { billingContract } from "./billing"
-import { rss3Contract } from "./rss3"
+import {
+	billingAddress,
+	useReadBillingBalanceOf,
+	useReadRss3TokenAllowance,
+	useReadRss3TokenBalanceOf,
+	useSimulateBillingDeposit,
+	useSimulateRss3TokenApprove,
+	useWriteBillingDeposit,
+	useWriteRss3TokenApprove,
+} from "./hooks/core"
 
 function useAddress() {
 	const { data } = useSIWE()
 	return ((data as SIWESession)?.address ?? "0x0") as `0x${string}`
 }
 
+function useSwitchCorrectChain({
+	targetChainId,
+}: { targetChainId: Register["config"]["chains"][number]["id"] }) {
+	const { chainId } = useAccount()
+	const switchChain = useSwitchChain()
+	return {
+		chainId,
+		switchCorrectChain: () => {
+			switchChain.switchChain({ chainId: targetChainId })
+		},
+	}
+}
+
 export function useDepositedRss3Balance() {
 	const address = useAddress()
-	const contractRead = useContractRead({
-		address: billingContract.address,
-		abi: billingContract.abi,
-		functionName: "balanceOf",
+	const contractRead = useReadBillingBalanceOf({
 		args: [address],
-		watch: true,
 	})
 
-	return {
-		tokenDecimals: billingContract.tokenDecimals,
-		...contractRead,
-	}
+	return contractRead
 }
 
 export function useRss3Balance() {
 	const address = useAddress()
-	const contractRead = useContractRead({
-		address: rss3Contract.address,
-		abi: rss3Contract.abi,
-		functionName: "balanceOf",
+	const contractRead = useReadRss3TokenBalanceOf({
 		args: [address],
-		watch: true,
 	})
 
-	return {
-		tokenDecimals: rss3Contract.tokenDecimals,
-		...contractRead,
-	}
+	return contractRead
 }
 
 export function useRss3Allowance() {
 	const address = useAddress()
-	const contractRead = useContractRead({
-		address: rss3Contract.address,
-		abi: rss3Contract.abi,
-		functionName: "allowance",
-		args: [address, billingContract.address],
-		watch: true,
+	const contractRead = useReadRss3TokenAllowance({
+		args: [address, billingAddress[rss3Chain.id]],
 	})
 
-	return {
-		tokenDecimals: rss3Contract.tokenDecimals,
-		...contractRead,
-	}
+	return contractRead
 }
 
 export function useRss3Approve(value: bigint) {
-	const { config } = usePrepareContractWrite({
-		address: rss3Contract.address,
-		abi: rss3Contract.abi,
-		functionName: "approve",
-		args: [billingContract.address, value],
-		enabled: value > 0n,
-	})
-
-	const contractWrite = useContractWrite({
-		...config,
-		onError(error) {
-			showNotification({
-				color: "red",
-				title: "Approve failed",
-				message: error.message,
-			})
+	const simulate = useSimulateRss3TokenApprove({
+		args: [billingAddress[rss3Chain.id], value],
+		query: {
+			enabled: value > 0n,
+			retry: false,
 		},
 	})
-	const waitForTransaction = useWaitForTransaction({
-		hash: contractWrite.data?.hash,
+
+	const contractWrite = useWriteRss3TokenApprove({
+		mutation: {
+			onError: (error) => {
+				showNotification({
+					color: "red",
+					title: "Approve failed",
+					message: error.message,
+				})
+			},
+		},
+	})
+
+	const waitForTransaction = useWaitForTransactionReceipt({
+		hash: contractWrite.data,
 	})
 
 	// on success
@@ -99,36 +102,41 @@ export function useRss3Approve(value: bigint) {
 	}, [waitForTransaction.isSuccess])
 
 	return {
+		simulate,
 		contractWrite,
 		waitForTransaction,
 	}
 }
 
 export function useRss3Deposit(value: bigint) {
-	const queryClient = useQueryClient()
-	const { config } = usePrepareContractWrite({
-		address: billingContract.address,
-		abi: billingContract.abi,
-		functionName: "deposit",
+	const simulate = useSimulateBillingDeposit({
 		args: [value],
-		enabled: value > 0n,
-	})
-
-	const contractWrite = useContractWrite({
-		...config,
-		onError(error) {
-			showNotification({
-				color: "red",
-				title: "Deposit failed",
-				message: error.message,
-			})
+		query: {
+			enabled: value > 0n,
+			retry: false,
 		},
 	})
-	const waitForTransaction = useWaitForTransaction({
-		hash: contractWrite.data?.hash,
+
+	const contractWrite = useWriteBillingDeposit({
+		mutation: {
+			onError: (error) => {
+				showNotification({
+					color: "red",
+					title: "Deposit failed",
+					message: error.message,
+				})
+			},
+		},
+	})
+
+	const waitForTransaction = useWaitForTransactionReceipt({
+		hash: contractWrite.data,
 	})
 
 	// on success
+	const queryClient = useQueryClient()
+	const rss3Balance = useRss3Balance()
+	const depositedRss3Balance = useDepositedRss3Balance()
 	useEffect(() => {
 		if (waitForTransaction.isSuccess) {
 			showNotification({
@@ -136,13 +144,19 @@ export function useRss3Deposit(value: bigint) {
 				title: "Deposit successful",
 				message: "Your $RSS3 tokens have been deposited",
 			})
-			queryClient.invalidateQueries({
-				queryKey: ["historyDeposit"],
-			})
+			queryClient.invalidateQueries({ queryKey: ["historyDeposit"] })
+			queryClient.invalidateQueries({ queryKey: rss3Balance.queryKey })
+			queryClient.invalidateQueries({ queryKey: depositedRss3Balance.queryKey })
 		}
-	}, [queryClient, waitForTransaction.isSuccess])
+	}, [
+		depositedRss3Balance.queryKey,
+		queryClient,
+		rss3Balance.queryKey,
+		waitForTransaction.isSuccess,
+	])
 
 	return {
+		simulate,
 		contractWrite,
 		waitForTransaction,
 	}

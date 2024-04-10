@@ -10,10 +10,10 @@ export default function Page({
 	params,
 }: {
 	params: {
-		id: number
+		id: string
 	}
 }) {
-	const id = Number(params.id)
+	const id = params.id
 
 	return (
 		<>

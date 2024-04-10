@@ -30,7 +30,7 @@ import { HttpRequestError } from "viem"
 export function Settings({
 	id,
 }: {
-	id: number
+	id: string
 }) {
 	const key = useGetKey({ id })
 
@@ -60,7 +60,7 @@ const nameSchema = object({
 
 type NameFormData = Input<typeof nameSchema>
 
-function NameForm({ id, name }: { id: number; name?: string }) {
+function NameForm({ id, name }: { id: string; name?: string }) {
 	const nameForm = useForm<NameFormData>({
 		initialValues: {
 			name: name || "",
@@ -95,7 +95,7 @@ function NameForm({ id, name }: { id: number; name?: string }) {
 	)
 }
 
-function KeyForm({ id, passkey }: { id: number; passkey?: string }) {
+function KeyForm({ id, passkey }: { id: string; passkey?: string }) {
 	const reassignKey = useReassignKeySecret()
 
 	const handleRegenerate = useCallback(() => {

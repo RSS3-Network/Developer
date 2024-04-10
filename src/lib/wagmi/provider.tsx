@@ -1,14 +1,28 @@
-// import { headers } from "next/headers";
+"use client"
 
-// import { config } from "./config";
-import { WagmiClientProvider } from "./provider.client"
-// import { cookieToInitialState } from "wagmi-v2";
+import { config } from "./config"
 
-/**
- * Should be placed outside tanstack query provider
- */
-export function WagmiProvider({ children }: { children: React.ReactNode }) {
-	// const initialState = cookieToInitialState(config, headers().get("cookie"));
+import { ConnectKitProvider } from "connectkit"
 
-	return <WagmiClientProvider>{children}</WagmiClientProvider>
+import { WagmiProvider as WagmiProvider_, cookieToInitialState } from "wagmi"
+import { siweClient } from "./siwe"
+
+export function WagmiProvider({
+	children,
+	cookie,
+}: {
+	children: React.ReactNode
+	cookie?: string | null
+}) {
+	const initialState = cookieToInitialState(config, cookie)
+	return (
+		<WagmiProvider_ config={config} initialState={initialState}>
+			<siweClient.Provider
+				signOutOnAccountChange={true}
+				signOutOnNetworkChange={false}
+			>
+				<ConnectKitProvider>{children}</ConnectKitProvider>
+			</siweClient.Provider>
+		</WagmiProvider_>
+	)
 }

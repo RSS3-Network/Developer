@@ -1,26 +1,26 @@
-import { env } from "./src/env.mjs"
+import { env } from "./src/env.mjs";
 
-import million from "million/compiler"
+import million from "million/compiler";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	webpack: (config) => {
-		config.externals.push("pino-pretty", "lokijs", "encoding")
-		return config
+		config.externals.push("pino-pretty", "lokijs", "encoding");
+		return config;
 	},
 	async rewrites() {
+		const endpoint = {
+			development: "payment.rss3.dev",
+			test: "payment.rss3.dev",
+			prod: "payment.rss3.io",
+		}[env.NEXT_PUBLIC_ENV];
+
 		return [
 			{
 				source: "/api/gateway/:path*",
-				destination: `https://gateway.${
-					env.NEXT_PUBLIC_ENV === "dev"
-						? "dev."
-						: env.NEXT_PUBLIC_ENV === "staging"
-						  ? "staging."
-						  : ""
-				}rss3.io/:path*`,
+				destination: `https://${endpoint}/:path*`,
 			},
-		]
+		];
 	},
 	experimental: {
 		optimizePackageImports: [
@@ -29,11 +29,11 @@ const nextConfig = {
 			"@tabler/icons-react",
 		],
 	},
-}
+};
 
 /** @type {Parameters<million['next']>[1]} */
 const millionConfig = {
 	auto: { rsc: true },
-}
+};
 
-export default million.next(nextConfig, millionConfig)
+export default million.next(nextConfig, millionConfig);

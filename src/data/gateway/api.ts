@@ -64,7 +64,7 @@ export async function getHistoryCollection({
 }
 
 type HistoryConsumptionInput = {
-	keyId?: number
+	keyId?: string
 	since?: number
 	until?: number
 	merge?: boolean
@@ -164,7 +164,7 @@ type GenerateKeyInput = {
 type KeyResult = {
 	api_calls_current: number
 	api_calls_total: number
-	id: number
+	id: string
 	key: string
 	name: string
 	ru_used_current: number
@@ -182,7 +182,7 @@ export async function generateKey({ name }: GenerateKeyInput) {
 }
 
 type DeleteKeyInput = {
-	id: number
+	id: string
 }
 export async function deleteKey({ id }: DeleteKeyInput) {
 	return await (
@@ -193,14 +193,14 @@ export async function deleteKey({ id }: DeleteKeyInput) {
 }
 
 type GetKeyInput = {
-	id: number
+	id: string
 }
 export async function getKey({ id }: GetKeyInput) {
 	return (await (await ff(`/api/gateway/key/${id}`)).json()) as KeyResult
 }
 
 type ReassignKeySecretInput = {
-	id: number
+	id: string
 }
 export async function reassignKeySecret({ id }: ReassignKeySecretInput) {
 	return (await (
@@ -211,7 +211,7 @@ export async function reassignKeySecret({ id }: ReassignKeySecretInput) {
 }
 
 type UpdateKeyInput = {
-	id: number
+	id: string
 	name: string
 }
 export async function updateKey({ id, name }: UpdateKeyInput) {

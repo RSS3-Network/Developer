@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"include": ["src/**/*.{js,jsx,ts,tsx}"],
+		"include": ["src/**/*"],
 		"ignore": [".next", "pnpm-lock.yaml", "dist", "public"]
 	},
 	"formatter": {

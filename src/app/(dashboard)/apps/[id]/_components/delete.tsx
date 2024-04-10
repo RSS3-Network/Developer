@@ -8,7 +8,7 @@ import { IconAlertCircleFilled } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
 import { useCallback } from "react"
 
-export function Delete({ id }: { id: number }) {
+export function Delete({ id }: { id: string }) {
 	const deleteKey = useDeleteKey()
 	const router = useRouter()
 

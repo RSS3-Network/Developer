@@ -3,7 +3,7 @@
 import { BreadcrumbsTitle } from "@/components/breadcrumbs"
 import { useGetKey } from "@/data/gateway/hooks"
 
-export function Title({ id }: { id: number }) {
+export function Title({ id }: { id: string }) {
 	const key = useGetKey({ id })
 
 	return (

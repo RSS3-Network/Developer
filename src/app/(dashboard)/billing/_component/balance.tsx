@@ -51,10 +51,7 @@ export function Balance() {
 					<Text size="xl" fw="bold" ff="monospace">
 						<NumberFormatter
 							thousandSeparator
-							value={formatUnits(
-								depositedRss3.data ?? 0n,
-								depositedRss3.tokenDecimals,
-							)}
+							value={formatUnits(depositedRss3.data ?? 0n, 18)}
 						/>
 					</Text>
 				</Stack>
@@ -66,7 +63,7 @@ export function Balance() {
 					<Text size="xl" fw="bold" ff="monospace">
 						<NumberFormatter
 							thousandSeparator
-							value={formatUnits(rss3.data ?? 0n, rss3.tokenDecimals)}
+							value={formatUnits(rss3.data ?? 0n, 18)}
 						/>
 					</Text>
 				</Stack>
@@ -126,9 +123,7 @@ function DepositModal({
 	onClose: () => void
 }) {
 	const rss3 = useRss3Balance()
-	const maxBalance = parseFloat(
-		formatUnits(rss3.data ?? 0n, rss3.tokenDecimals),
-	)
+	const maxBalance = parseFloat(formatUnits(rss3.data ?? 0n, 18))
 
 	const formSchema = useMemo(
 		() =>
@@ -150,10 +145,7 @@ function DepositModal({
 
 	const allowance = useRss3Allowance()
 
-	const requestedAmount = parseUnits(
-		form.values.amount.toString(),
-		rss3.tokenDecimals,
-	)
+	const requestedAmount = parseUnits(form.values.amount.toString(), 18)
 	const approve = useRss3Approve(requestedAmount)
 
 	const deposit = useRss3Deposit(requestedAmount)
@@ -192,7 +184,7 @@ function DepositModal({
 								Current allowance:{" "}
 								<Text span ff="monospace" fw="bold">
 									<NumberFormatter
-										value={formatUnits(allowance.data, rss3.tokenDecimals)}
+										value={formatUnits(allowance.data, 18)}
 										suffix=" RSS3"
 									/>
 								</Text>
@@ -205,7 +197,10 @@ function DepositModal({
 					),
 					labels: { confirm: "Approve", cancel: "Cancel" },
 					onConfirm: () => {
-						approve.contractWrite.write?.()
+						if (approve.simulate.data?.request) {
+							// approve
+							approve.contractWrite.writeContract(approve.simulate.data.request)
+						}
 					},
 				})
 
@@ -213,8 +208,9 @@ function DepositModal({
 			}
 
 			// deposit
-
-			deposit.contractWrite.write?.()
+			if (deposit.simulate.data?.request) {
+				deposit.contractWrite.writeContract(deposit.simulate.data.request)
+			}
 		},
 		[
 			deposit,
@@ -222,7 +218,7 @@ function DepositModal({
 			approve.contractWrite,
 			isExceededAllowance,
 			rss3.data,
-			rss3.tokenDecimals,
+			approve.simulate.data?.request,
 		],
 	)
 
@@ -259,8 +255,8 @@ function DepositModal({
 						variant="default"
 						onClick={handleClose}
 						disabled={
-							deposit.contractWrite.isLoading ||
-							deposit.waitForTransaction.isLoading
+							deposit.contractWrite.isPending ||
+							deposit.waitForTransaction.isPending
 						}
 					>
 						Cancel
@@ -268,12 +264,12 @@ function DepositModal({
 					<Button
 						type="submit"
 						loading={
-							approve.contractWrite.isLoading ||
-							approve.waitForTransaction.isLoading ||
-							deposit.contractWrite.isLoading ||
-							deposit.waitForTransaction.isLoading ||
-							rss3.isLoading ||
-							allowance.isLoading
+							approve.contractWrite.isPending ||
+							approve.waitForTransaction.isPending ||
+							deposit.contractWrite.isPending ||
+							deposit.waitForTransaction.isPending ||
+							rss3.isPending ||
+							allowance.isPending
 						}
 						disabled={!form.values.amount}
 					>
@@ -297,9 +293,7 @@ function WithdrawModal({
 
 	const depositedRss3Balance = depositedRss3.data ?? 0n
 
-	const maxBalance = parseFloat(
-		formatUnits(depositedRss3Balance, depositedRss3.tokenDecimals),
-	)
+	const maxBalance = parseFloat(formatUnits(depositedRss3Balance, 18))
 
 	const requestWithdrawal = useRequestWithdrawal()
 
@@ -437,11 +431,7 @@ function WithdrawModal({
 	)
 }
 
-function CurrentWithdrawalWarning({
-	amount,
-}: {
-	amount: number
-}) {
+function CurrentWithdrawalWarning({ amount }: { amount: number }) {
 	const [opened, setOpened] = useState(false)
 
 	return (

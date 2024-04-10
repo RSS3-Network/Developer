@@ -109,7 +109,7 @@ function DownArrow() {
 			height="9"
 			viewBox="0 0 8 9"
 			fill="none"
-			className="h-3 w-3"
+			className="size-3"
 		>
 			<path
 				d="M1.27344 4.95135L4.04537 7.72336L6.81738 4.95135"
