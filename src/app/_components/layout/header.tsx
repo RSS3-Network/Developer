@@ -1,7 +1,7 @@
 "use client"
 
 import { ConnectButton } from "@/components/connect-button"
-import Logo from "@/components/icons/logo"
+import Logo from "@/components/icons/Logo"
 import { AppShellHeader, Burger, Group, Text } from "@mantine/core"
 import Link from "next/link"
 import { HeaderNav } from "./header-nav"
