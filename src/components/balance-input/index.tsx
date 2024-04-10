@@ -17,12 +17,12 @@ export function BalanceInput({
 		typeof props.value !== "number"
 			? "Invalid value"
 			: props.value < _min
-			  ? `Value must be greater than ${_min}`
-			  : props.value > _safeMax
-				  ? `Value must be less than ${_safeMax}`
-				  : props.value > _max
-					  ? `Insufficient balance (max: ${_max})`
-					  : undefined
+				? `Value must be greater than ${_min}`
+				: props.value > _safeMax
+					? `Value must be less than ${_safeMax}`
+					: props.value > _max
+						? `Insufficient balance (max: ${_max})`
+						: undefined
 
 	return (
 		<NumberInput
