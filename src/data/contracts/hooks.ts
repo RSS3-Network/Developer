@@ -110,7 +110,7 @@ export function useRss3Approve(value: bigint) {
 
 export function useRss3Deposit(value: bigint) {
 	const simulate = useSimulateBillingDeposit({
-		args: [value],
+		value,
 		query: {
 			enabled: value > 0n,
 			retry: false,
