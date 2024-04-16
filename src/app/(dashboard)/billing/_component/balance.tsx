@@ -4,7 +4,6 @@ import { BalanceInput } from "@/components/balance-input"
 import {
 	useDepositedRss3Balance,
 	useRss3Allowance,
-	useRss3Approve,
 	useRss3Balance,
 	useRss3Deposit,
 } from "@/data/contracts/hooks"
@@ -146,14 +145,8 @@ function DepositModal({
 	const allowance = useRss3Allowance()
 
 	const requestedAmount = parseUnits(form.values.amount.toString(), 18)
-	const approve = useRss3Approve(requestedAmount)
 
 	const deposit = useRss3Deposit(requestedAmount)
-
-	const isExceededAllowance =
-		typeof rss3.data !== "undefined" &&
-		typeof allowance.data !== "undefined" &&
-		requestedAmount > allowance.data
 
 	const handleDeposit = useCallback(
 		(values: Input<typeof formSchema>) => {
@@ -164,62 +157,12 @@ function DepositModal({
 				return
 			}
 
-			// approve
-
-			if (isExceededAllowance) {
-				// set allowance
-				openConfirmModal({
-					centered: true,
-					title: "One More Step: Approve Token Allowance",
-					children: (
-						<>
-							<Text>
-								Please increase your allowance to{" "}
-								<Text span ff="monospace" fw="bold">
-									<NumberFormatter value={values.amount} suffix=" RSS3" />
-								</Text>{" "}
-								.
-							</Text>
-							<Text>
-								Current allowance:{" "}
-								<Text span ff="monospace" fw="bold">
-									<NumberFormatter
-										value={formatUnits(allowance.data, 18)}
-										suffix=" RSS3"
-									/>
-								</Text>
-							</Text>
-							<Text size="sm" c="dimmed">
-								*Allowance is a predetermined limit set by you on how much $RSS3
-								can be managed by the RSS3 Billing contract.
-							</Text>
-						</>
-					),
-					labels: { confirm: "Approve", cancel: "Cancel" },
-					onConfirm: () => {
-						if (approve.simulate.data?.request) {
-							// approve
-							approve.contractWrite.writeContract(approve.simulate.data.request)
-						}
-					},
-				})
-
-				return
-			}
-
 			// deposit
 			if (deposit.simulate.data?.request) {
 				deposit.contractWrite.writeContract(deposit.simulate.data.request)
 			}
 		},
-		[
-			deposit,
-			allowance.data,
-			approve.contractWrite,
-			isExceededAllowance,
-			rss3.data,
-			approve.simulate.data?.request,
-		],
+		[deposit, allowance.data, rss3.data],
 	)
 
 	const handleClose = useCallback(() => {
@@ -264,8 +207,6 @@ function DepositModal({
 					<Button
 						type="submit"
 						loading={
-							approve.contractWrite.isPending ||
-							approve.waitForTransaction.isPending ||
 							deposit.contractWrite.isPending ||
 							deposit.waitForTransaction.isPending ||
 							rss3.isPending ||
@@ -273,7 +214,7 @@ function DepositModal({
 						}
 						disabled={!form.values.amount}
 					>
-						{isExceededAllowance ? "Approve" : "Deposit"}
+						Deposit
 					</Button>
 				</Group>
 			</form>

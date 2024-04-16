@@ -1,15 +1,15 @@
 import {
 	createUseReadContract,
-	createUseWriteContract,
 	createUseSimulateContract,
 	createUseWatchContractEvent,
+	createUseWriteContract,
 } from "wagmi/codegen"
 
 import {
 	createReadContract,
-	createWriteContract,
 	createSimulateContract,
 	createWatchContractEvent,
+	createWriteContract,
 } from "wagmi/codegen"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +17,7 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const billingAbi = [
@@ -31,6 +31,37 @@ export const billingAbi = [
 			{ name: "version", internalType: "uint8", type: "uint8", indexed: false },
 		],
 		name: "Initialized",
+	},
+	{
+		type: "event",
+		anonymous: false,
+		inputs: [
+			{
+				name: "nodeAddr",
+				internalType: "address",
+				type: "address",
+				indexed: true,
+			},
+			{
+				name: "amount",
+				internalType: "uint256",
+				type: "uint256",
+				indexed: true,
+			},
+			{
+				name: "receiver",
+				internalType: "address",
+				type: "address",
+				indexed: true,
+			},
+			{
+				name: "isPublicGood",
+				internalType: "bool",
+				type: "bool",
+				indexed: false,
+			},
+		],
+		name: "RewardsDistributed",
 	},
 	{
 		type: "event",
@@ -131,7 +162,6 @@ export const billingAbi = [
 				type: "uint256",
 				indexed: true,
 			},
-			{ name: "fee", internalType: "uint256", type: "uint256", indexed: true },
 		],
 		name: "TokensWithdrawn",
 	},
@@ -162,7 +192,6 @@ export const billingAbi = [
 		inputs: [
 			{ name: "users", internalType: "address[]", type: "address[]" },
 			{ name: "amounts", internalType: "uint256[]", type: "uint256[]" },
-			{ name: "to", internalType: "address", type: "address" },
 		],
 		name: "collectTokens",
 		outputs: [
@@ -170,10 +199,27 @@ export const billingAbi = [
 		],
 	},
 	{
+		stateMutability: "view",
+		type: "function",
+		inputs: [],
+		name: "collectedBalance",
+		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+	},
+	{
 		stateMutability: "payable",
 		type: "function",
 		inputs: [],
 		name: "deposit",
+		outputs: [],
+	},
+	{
+		stateMutability: "nonpayable",
+		type: "function",
+		inputs: [
+			{ name: "nodeAddrs", internalType: "address[]", type: "address[]" },
+			{ name: "rewards", internalType: "uint256[]", type: "uint256[]" },
+		],
+		name: "distributeRewards",
 		outputs: [],
 	},
 	{
@@ -223,7 +269,10 @@ export const billingAbi = [
 	{
 		stateMutability: "nonpayable",
 		type: "function",
-		inputs: [{ name: "collector", internalType: "address", type: "address" }],
+		inputs: [
+			{ name: "staking", internalType: "address", type: "address" },
+			{ name: "collector", internalType: "address", type: "address" },
+		],
 		name: "initialize",
 		outputs: [],
 	},
@@ -250,6 +299,13 @@ export const billingAbi = [
 	{
 		stateMutability: "view",
 		type: "function",
+		inputs: [],
+		name: "stakingContract",
+		outputs: [{ name: "", internalType: "address", type: "address" }],
+	},
+	{
+		stateMutability: "view",
+		type: "function",
 		inputs: [{ name: "interfaceId", internalType: "bytes4", type: "bytes4" }],
 		name: "supportsInterface",
 		outputs: [{ name: "", internalType: "bool", type: "bool" }],
@@ -260,7 +316,6 @@ export const billingAbi = [
 		inputs: [
 			{ name: "users", internalType: "address[]", type: "address[]" },
 			{ name: "amounts", internalType: "uint256[]", type: "uint256[]" },
-			{ name: "fees", internalType: "uint256[]", type: "uint256[]" },
 		],
 		name: "withdrawTokens",
 		outputs: [],
@@ -268,16 +323,16 @@ export const billingAbi = [
 ] as const
 
 /**
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const billingAddress = {
-	2331: "0x2D2F2649F314100A17ead85c7a0b7099780e743e",
+	2331: "0xeb611a581CEC185982Bd21f1a37fcD29b2d95546",
 	12553: "0x0000000000000000000000000000000000000000",
 } as const
 
 /**
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const billingConfig = {
@@ -423,7 +478,7 @@ export const rss3TokenConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBilling = /*#__PURE__*/ createUseReadContract({
@@ -434,7 +489,7 @@ export const useReadBilling = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"COLLECTOR_ROLE"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingCollectorRole = /*#__PURE__*/ createUseReadContract({
@@ -446,7 +501,7 @@ export const useReadBillingCollectorRole = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"DEFAULT_ADMIN_ROLE"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingDefaultAdminRole =
@@ -459,7 +514,7 @@ export const useReadBillingDefaultAdminRole =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"balanceOf"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingBalanceOf = /*#__PURE__*/ createUseReadContract({
@@ -469,9 +524,22 @@ export const useReadBillingBalanceOf = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectedBalance"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useReadBillingCollectedBalance =
+	/*#__PURE__*/ createUseReadContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "collectedBalance",
+	})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleAdmin"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingGetRoleAdmin = /*#__PURE__*/ createUseReadContract({
@@ -483,7 +551,7 @@ export const useReadBillingGetRoleAdmin = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleMember"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingGetRoleMember = /*#__PURE__*/ createUseReadContract({
@@ -495,7 +563,7 @@ export const useReadBillingGetRoleMember = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleMemberCount"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingGetRoleMemberCount =
@@ -508,7 +576,7 @@ export const useReadBillingGetRoleMemberCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"hasRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingHasRole = /*#__PURE__*/ createUseReadContract({
@@ -518,9 +586,22 @@ export const useReadBillingHasRole = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"stakingContract"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useReadBillingStakingContract =
+	/*#__PURE__*/ createUseReadContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "stakingContract",
+	})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"supportsInterface"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useReadBillingSupportsInterface =
@@ -533,7 +614,7 @@ export const useReadBillingSupportsInterface =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBilling = /*#__PURE__*/ createUseWriteContract({
@@ -544,7 +625,7 @@ export const useWriteBilling = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingCollectTokens =
@@ -557,7 +638,7 @@ export const useWriteBillingCollectTokens =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"deposit"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingDeposit = /*#__PURE__*/ createUseWriteContract({
@@ -567,9 +648,22 @@ export const useWriteBillingDeposit = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"distributeRewards"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useWriteBillingDistributeRewards =
+	/*#__PURE__*/ createUseWriteContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "distributeRewards",
+	})
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"grantRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingGrantRole = /*#__PURE__*/ createUseWriteContract({
@@ -581,7 +675,7 @@ export const useWriteBillingGrantRole = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingInitialize = /*#__PURE__*/ createUseWriteContract({
@@ -593,7 +687,7 @@ export const useWriteBillingInitialize = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"renounceRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingRenounceRole = /*#__PURE__*/ createUseWriteContract(
@@ -603,7 +697,7 @@ export const useWriteBillingRenounceRole = /*#__PURE__*/ createUseWriteContract(
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"revokeRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingRevokeRole = /*#__PURE__*/ createUseWriteContract({
@@ -615,7 +709,7 @@ export const useWriteBillingRevokeRole = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWriteBillingWithdrawTokens =
@@ -628,7 +722,7 @@ export const useWriteBillingWithdrawTokens =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBilling = /*#__PURE__*/ createUseSimulateContract({
@@ -639,7 +733,7 @@ export const useSimulateBilling = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingCollectTokens =
@@ -652,7 +746,7 @@ export const useSimulateBillingCollectTokens =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"deposit"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingDeposit =
@@ -663,9 +757,22 @@ export const useSimulateBillingDeposit =
 	})
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"distributeRewards"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useSimulateBillingDistributeRewards =
+	/*#__PURE__*/ createUseSimulateContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "distributeRewards",
+	})
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"grantRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingGrantRole =
@@ -678,7 +785,7 @@ export const useSimulateBillingGrantRole =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingInitialize =
@@ -691,7 +798,7 @@ export const useSimulateBillingInitialize =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"renounceRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingRenounceRole =
@@ -704,7 +811,7 @@ export const useSimulateBillingRenounceRole =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"revokeRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingRevokeRole =
@@ -717,7 +824,7 @@ export const useSimulateBillingRevokeRole =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useSimulateBillingWithdrawTokens =
@@ -730,7 +837,7 @@ export const useSimulateBillingWithdrawTokens =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingEvent = /*#__PURE__*/ createUseWatchContractEvent({
@@ -741,7 +848,7 @@ export const useWatchBillingEvent = /*#__PURE__*/ createUseWatchContractEvent({
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"Initialized"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingInitializedEvent =
@@ -752,9 +859,22 @@ export const useWatchBillingInitializedEvent =
 	})
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RewardsDistributed"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useWatchBillingRewardsDistributedEvent =
+	/*#__PURE__*/ createUseWatchContractEvent({
+		abi: billingAbi,
+		address: billingAddress,
+		eventName: "RewardsDistributed",
+	})
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleAdminChanged"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingRoleAdminChangedEvent =
@@ -767,7 +887,7 @@ export const useWatchBillingRoleAdminChangedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleGranted"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingRoleGrantedEvent =
@@ -780,7 +900,7 @@ export const useWatchBillingRoleGrantedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleRevoked"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingRoleRevokedEvent =
@@ -793,7 +913,7 @@ export const useWatchBillingRoleRevokedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensCollected"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingTokensCollectedEvent =
@@ -806,7 +926,7 @@ export const useWatchBillingTokensCollectedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensDeposited"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingTokensDepositedEvent =
@@ -819,7 +939,7 @@ export const useWatchBillingTokensDepositedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensWithdrawn"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const useWatchBillingTokensWithdrawnEvent =
@@ -1089,7 +1209,7 @@ export const useWatchRss3TokenTransferEvent =
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBilling = /*#__PURE__*/ createReadContract({
@@ -1100,7 +1220,7 @@ export const readBilling = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"COLLECTOR_ROLE"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingCollectorRole = /*#__PURE__*/ createReadContract({
@@ -1112,7 +1232,7 @@ export const readBillingCollectorRole = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"DEFAULT_ADMIN_ROLE"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingDefaultAdminRole = /*#__PURE__*/ createReadContract({
@@ -1124,7 +1244,7 @@ export const readBillingDefaultAdminRole = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"balanceOf"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingBalanceOf = /*#__PURE__*/ createReadContract({
@@ -1134,9 +1254,21 @@ export const readBillingBalanceOf = /*#__PURE__*/ createReadContract({
 })
 
 /**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectedBalance"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const readBillingCollectedBalance = /*#__PURE__*/ createReadContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "collectedBalance",
+})
+
+/**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleAdmin"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingGetRoleAdmin = /*#__PURE__*/ createReadContract({
@@ -1148,7 +1280,7 @@ export const readBillingGetRoleAdmin = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleMember"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingGetRoleMember = /*#__PURE__*/ createReadContract({
@@ -1160,7 +1292,7 @@ export const readBillingGetRoleMember = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"getRoleMemberCount"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingGetRoleMemberCount = /*#__PURE__*/ createReadContract({
@@ -1172,7 +1304,7 @@ export const readBillingGetRoleMemberCount = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"hasRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingHasRole = /*#__PURE__*/ createReadContract({
@@ -1182,9 +1314,21 @@ export const readBillingHasRole = /*#__PURE__*/ createReadContract({
 })
 
 /**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"stakingContract"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const readBillingStakingContract = /*#__PURE__*/ createReadContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "stakingContract",
+})
+
+/**
  * Wraps __{@link readContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"supportsInterface"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const readBillingSupportsInterface = /*#__PURE__*/ createReadContract({
@@ -1196,7 +1340,7 @@ export const readBillingSupportsInterface = /*#__PURE__*/ createReadContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBilling = /*#__PURE__*/ createWriteContract({
@@ -1207,7 +1351,7 @@ export const writeBilling = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingCollectTokens = /*#__PURE__*/ createWriteContract({
@@ -1219,7 +1363,7 @@ export const writeBillingCollectTokens = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"deposit"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingDeposit = /*#__PURE__*/ createWriteContract({
@@ -1229,9 +1373,21 @@ export const writeBillingDeposit = /*#__PURE__*/ createWriteContract({
 })
 
 /**
+ * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"distributeRewards"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const writeBillingDistributeRewards = /*#__PURE__*/ createWriteContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "distributeRewards",
+})
+
+/**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"grantRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingGrantRole = /*#__PURE__*/ createWriteContract({
@@ -1243,7 +1399,7 @@ export const writeBillingGrantRole = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingInitialize = /*#__PURE__*/ createWriteContract({
@@ -1255,7 +1411,7 @@ export const writeBillingInitialize = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"renounceRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingRenounceRole = /*#__PURE__*/ createWriteContract({
@@ -1267,7 +1423,7 @@ export const writeBillingRenounceRole = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"revokeRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingRevokeRole = /*#__PURE__*/ createWriteContract({
@@ -1279,7 +1435,7 @@ export const writeBillingRevokeRole = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const writeBillingWithdrawTokens = /*#__PURE__*/ createWriteContract({
@@ -1291,7 +1447,7 @@ export const writeBillingWithdrawTokens = /*#__PURE__*/ createWriteContract({
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBilling = /*#__PURE__*/ createSimulateContract({
@@ -1302,7 +1458,7 @@ export const simulateBilling = /*#__PURE__*/ createSimulateContract({
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"collectTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingCollectTokens =
@@ -1315,7 +1471,7 @@ export const simulateBillingCollectTokens =
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"deposit"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingDeposit = /*#__PURE__*/ createSimulateContract({
@@ -1325,9 +1481,22 @@ export const simulateBillingDeposit = /*#__PURE__*/ createSimulateContract({
 })
 
 /**
+ * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"distributeRewards"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const simulateBillingDistributeRewards =
+	/*#__PURE__*/ createSimulateContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "distributeRewards",
+	})
+
+/**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"grantRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingGrantRole = /*#__PURE__*/ createSimulateContract({
@@ -1339,7 +1508,7 @@ export const simulateBillingGrantRole = /*#__PURE__*/ createSimulateContract({
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"initialize"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingInitialize = /*#__PURE__*/ createSimulateContract({
@@ -1351,7 +1520,7 @@ export const simulateBillingInitialize = /*#__PURE__*/ createSimulateContract({
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"renounceRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingRenounceRole = /*#__PURE__*/ createSimulateContract(
@@ -1361,7 +1530,7 @@ export const simulateBillingRenounceRole = /*#__PURE__*/ createSimulateContract(
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"revokeRole"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingRevokeRole = /*#__PURE__*/ createSimulateContract({
@@ -1373,7 +1542,7 @@ export const simulateBillingRevokeRole = /*#__PURE__*/ createSimulateContract({
 /**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const simulateBillingWithdrawTokens =
@@ -1386,7 +1555,7 @@ export const simulateBillingWithdrawTokens =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingEvent = /*#__PURE__*/ createWatchContractEvent({
@@ -1397,7 +1566,7 @@ export const watchBillingEvent = /*#__PURE__*/ createWatchContractEvent({
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"Initialized"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingInitializedEvent =
@@ -1408,9 +1577,22 @@ export const watchBillingInitializedEvent =
 	})
 
 /**
+ * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RewardsDistributed"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const watchBillingRewardsDistributedEvent =
+	/*#__PURE__*/ createWatchContractEvent({
+		abi: billingAbi,
+		address: billingAddress,
+		eventName: "RewardsDistributed",
+	})
+
+/**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleAdminChanged"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingRoleAdminChangedEvent =
@@ -1423,7 +1605,7 @@ export const watchBillingRoleAdminChangedEvent =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleGranted"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingRoleGrantedEvent =
@@ -1436,7 +1618,7 @@ export const watchBillingRoleGrantedEvent =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"RoleRevoked"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingRoleRevokedEvent =
@@ -1449,7 +1631,7 @@ export const watchBillingRoleRevokedEvent =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensCollected"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingTokensCollectedEvent =
@@ -1462,7 +1644,7 @@ export const watchBillingTokensCollectedEvent =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensDeposited"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingTokensDepositedEvent =
@@ -1475,7 +1657,7 @@ export const watchBillingTokensDepositedEvent =
 /**
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link billingAbi}__ and `eventName` set to `"TokensWithdrawn"`
  *
- * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0x2d2f2649f314100a17ead85c7a0b7099780e743e)
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xeb611a581cec185982bd21f1a37fcd29b2d95546)
  * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
  */
 export const watchBillingTokensWithdrawnEvent =

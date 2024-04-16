@@ -14,7 +14,7 @@ async function fetchImplementationAddress(url: string) {
 }
 
 const billingImplementationAddress = await fetchImplementationAddress(
-	`https://scan.testnet.rss3.io/api/v2/addresses/0x2d2f2649f314100a17ead85c7a0b7099780e743e`,
+	`https://scan.testnet.rss3.io/api/v2/addresses/0xeb611a581cec185982bd21f1a37fcd29b2d95546`,
 )
 
 export default defineConfig({
@@ -39,7 +39,7 @@ export default defineConfig({
 					name: "billing",
 					address: {
 						[rss3.id]: "0x0000000000000000000000000000000000000000", // TODO:
-						[rss3Sepolia.id]: "0x2d2f2649f314100a17ead85c7a0b7099780e743e",
+						[rss3Sepolia.id]: "0xeb611a581cec185982bd21f1a37fcd29b2d95546",
 					},
 				},
 			],
