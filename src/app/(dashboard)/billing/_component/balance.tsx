@@ -174,7 +174,10 @@ function DepositModal({
 		if (deposit.waitForTransaction.isSuccess) {
 			handleClose()
 		}
-	}, [deposit.waitForTransaction.isSuccess, handleClose])
+	}, [
+		deposit.waitForTransaction.isSuccess,
+		// handleClose
+	])
 
 	return (
 		<Modal

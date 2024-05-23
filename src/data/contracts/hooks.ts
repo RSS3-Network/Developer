@@ -94,6 +94,7 @@ export function useRss3Approve(value: bigint) {
 	})
 
 	// on success
+
 	useEffect(() => {
 		if (waitForTransaction.isSuccess) {
 			showNotification({
@@ -143,6 +144,7 @@ export function useRss3Deposit(value: bigint) {
 	const queryClient = useQueryClient()
 	const rss3Balance = useRss3Balance()
 	const depositedRss3Balance = useDepositedRss3Balance()
+
 	useEffect(() => {
 		if (waitForTransaction.isSuccess) {
 			showNotification({
@@ -155,9 +157,9 @@ export function useRss3Deposit(value: bigint) {
 			queryClient.invalidateQueries({ queryKey: depositedRss3Balance.queryKey })
 		}
 	}, [
-		depositedRss3Balance.queryKey,
-		queryClient,
-		rss3Balance.queryKey,
+		// depositedRss3Balance.queryKey,
+		// queryClient,
+		// rss3Balance.queryKey,
 		waitForTransaction.isSuccess,
 	])
 
