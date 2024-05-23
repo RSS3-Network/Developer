@@ -199,7 +199,8 @@ function DepositModal({
 						onClick={handleClose}
 						disabled={
 							deposit.contractWrite.isPending ||
-							deposit.waitForTransaction.isPending
+							(deposit.contractWrite.data &&
+								deposit.waitForTransaction.isPending)
 						}
 					>
 						Cancel
@@ -208,7 +209,8 @@ function DepositModal({
 						type="submit"
 						loading={
 							deposit.contractWrite.isPending ||
-							deposit.waitForTransaction.isPending ||
+							(deposit.contractWrite.data &&
+								deposit.waitForTransaction.isPending) ||
 							rss3.isPending ||
 							allowance.isPending
 						}

@@ -88,6 +88,9 @@ export function useRss3Approve(value: bigint) {
 
 	const waitForTransaction = useWaitForTransactionReceipt({
 		hash: contractWrite.data,
+		query: {
+			enabled: Boolean(contractWrite.data),
+		},
 	})
 
 	// on success
@@ -131,6 +134,9 @@ export function useRss3Deposit(value: bigint) {
 
 	const waitForTransaction = useWaitForTransactionReceipt({
 		hash: contractWrite.data,
+		query: {
+			enabled: Boolean(contractWrite.data),
+		},
 	})
 
 	// on success

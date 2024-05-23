@@ -10,11 +10,11 @@ import { actions, fetch as fetchPlugin, react } from "@wagmi/cli/plugins"
 
 async function fetchImplementationAddress(url: string) {
 	const ret = await fetch(url).then((res) => res.json())
-	return ret.implementation_address as `0x${string}`
+	return (ret.implementation_address ?? ret.hash) as `0x${string}`
 }
 
 const billingImplementationAddress = await fetchImplementationAddress(
-	`https://scan.testnet.rss3.io/api/v2/addresses/0xfba4ec2c75fb22c06181893173db183ce0bcbf82`,
+	`https://scan.testnet.rss3.io/api/v2/addresses/0x182202d5B29781477A7daa35Ada4c64E381638bB`,
 )
 
 export default defineConfig({
@@ -39,7 +39,7 @@ export default defineConfig({
 					name: "billing",
 					address: {
 						[rss3.id]: "0x0000000000000000000000000000000000000000", // TODO:
-						[rss3Sepolia.id]: "0xfba4ec2c75fb22c06181893173db183ce0bcbf82",
+						[rss3Sepolia.id]: "0x182202d5B29781477A7daa35Ada4c64E381638bB",
 					},
 				},
 			],
