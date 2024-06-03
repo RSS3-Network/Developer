@@ -36,8 +36,14 @@ const headerNavItems: HeaderNavItems[] = [
 			{ label: "AI", href: "https://rss3.io/ai" },
 		],
 	},
+	{
+		label: "API",
+		dropdown: [
+			{ label: "Docs", href: "https://docs.rss3.io", external: true },
+			{ label: "Reference", href: "/reference" },
+		],
+	},
 	{ label: "Ecosystem", href: "https://rss3.io/ecosystem" },
-	{ label: "Docs", href: "https://docs.rss3.io", external: true },
 	{ label: "Blogs", href: "https://rss3.io/blog" },
 ]
 
