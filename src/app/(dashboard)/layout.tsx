@@ -14,6 +14,7 @@ export default function DashboardLayout({
 	const { isSignedIn } = useSIWE()
 
 	useEffect(() => {
+		// FIXME: `isSignedIn` will always be `false` at the first render
 		if (!isSignedIn) {
 			router.push("/")
 		}

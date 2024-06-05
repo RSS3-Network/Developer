@@ -1,8 +1,9 @@
 "use client"
 
-import { useGetHistoryConsumption } from "@/data/gateway/hooks"
+import { useGetHistoryConsumption, useGetRu } from "@/data/gateway/hooks"
 import { AreaChart } from "@mantine/charts"
 import {
+	Divider,
 	Group,
 	LoadingOverlay,
 	NumberFormatter,
@@ -32,61 +33,72 @@ export default function HistoryChart({ id }: { id?: string }) {
 		until: (dateRangeValue[1] ?? today).getTime(),
 	})
 
-	const [chartData, setChartData] = useState<
-		{
-			date: string
-			requests: number
-			ru: number
-		}[]
-	>([])
-	const [totalRequests, setTotalRequests] = useState(0)
-	const [totalRu, setTotalRu] = useState(0)
-	useEffect(() => {
-		if (appHistory.data) {
-			setChartData(
-				appHistory.data.history
-					.map((item) => ({
-						date: new Date(item.consumption_date).toLocaleDateString(),
-						requests: item.api_calls,
-						ru: item.ru_used,
-					}))
-					.reverse(),
-			)
-			setTotalRequests(
-				appHistory.data.history.reduce((acc, item) => acc + item.api_calls, 0),
-			)
-			setTotalRu(
-				appHistory.data.history.reduce((acc, item) => acc + item.ru_used, 0),
-			)
-		}
-	}, [appHistory.data])
+	const chartData =
+		appHistory.data?.history
+			.map((item) => ({
+				date: new Date(item.consumption_date).toLocaleDateString(),
+				requests: item.api_calls,
+				ru: item.ru_used,
+			}))
+			.reverse() ?? []
+
+	const totalRequestsInRange =
+		appHistory.data?.history.reduce((acc, item) => acc + item.api_calls, 0) ?? 0
+	const totalRuInRange =
+		appHistory.data?.history.reduce((acc, item) => acc + item.ru_used, 0) ?? 0
+
+	const ru = useGetRu()
+
+	const totalRequests = ru.data?.api_calls_total ?? 0
+	const totalRu = ru.data?.ru_used_total ?? 0
 
 	return (
 		<Stack>
+			<Group>
+				<Group>
+					<StatItem
+						label="Total Requests"
+						value={totalRequests}
+						isLoading={ru.isPending}
+					/>
+					<StatItem
+						label="Total RU"
+						tooltip="The RSS3 Unit is a computing unit that is directly used for billing."
+						value={totalRu}
+						isLoading={ru.isPending}
+					/>
+				</Group>
+				<Group>
+					<StatItem
+						label="Requests This Epoch"
+						tooltip="This will be settled when this epoch ends."
+						value={totalRequestsInRange}
+						isLoading={appHistory.isPending}
+					/>
+					<StatItem
+						label="RU This Epoch"
+						tooltip="The RSS3 Unit is a computing unit that is directly used for billing. This will be settled when this epoch ends."
+						value={totalRuInRange}
+						isLoading={appHistory.isPending}
+					/>
+				</Group>
+			</Group>
+
+			<Divider my="md" />
+
 			<Group justify="space-between">
 				<Group>
-					<Stack gap="xs">
-						<Text>Requests</Text>
-						<Skeleton visible={appHistory.isPending}>
-							<Text ff="monospace" fw="bold" size="lg">
-								<NumberFormatter value={totalRequests} thousandSeparator />
-							</Text>
-						</Skeleton>
-					</Stack>
-
-					<Stack gap="xs">
-						<Group>
-							<Text>RU</Text>
-							<Tooltip label="The RSS3 Unit is a computing unit that is directly used for billing.">
-								<IconExclamationCircle />
-							</Tooltip>
-						</Group>
-						<Skeleton visible={appHistory.isPending}>
-							<Text ff="monospace" fw="bold" size="lg">
-								<NumberFormatter value={totalRu} thousandSeparator />
-							</Text>
-						</Skeleton>
-					</Stack>
+					<StatItem
+						label="Requests In Range"
+						value={totalRequestsInRange}
+						isLoading={appHistory.isPending}
+					/>
+					<StatItem
+						label="RU In Range"
+						tooltip="The RSS3 Unit is a computing unit that is directly used for billing."
+						value={totalRuInRange}
+						isLoading={appHistory.isPending}
+					/>
 				</Group>
 
 				<DatePickerInput
@@ -111,6 +123,31 @@ export default function HistoryChart({ id }: { id?: string }) {
 						{ name: "ru", color: "cyan" },
 					]}
 				/>
+			</Skeleton>
+		</Stack>
+	)
+}
+
+function StatItem({
+	label,
+	tooltip,
+	value,
+	isLoading,
+}: { label: string; tooltip?: string; value: number; isLoading: boolean }) {
+	return (
+		<Stack gap="xs">
+			<Group gap="xs">
+				<Text>{label}</Text>
+				{tooltip && (
+					<Tooltip label={tooltip}>
+						<IconExclamationCircle />
+					</Tooltip>
+				)}
+			</Group>
+			<Skeleton visible={isLoading}>
+				<Text ff="monospace" fw="bold" size="lg">
+					<NumberFormatter value={value} thousandSeparator />
+				</Text>
 			</Skeleton>
 		</Stack>
 	)

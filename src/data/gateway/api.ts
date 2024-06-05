@@ -261,5 +261,5 @@ type RuResult = {
 	ru_used_total: number
 }
 export async function getRu() {
-	return (await (await ff(`/api/gateway/ru`)).json()) as RuResult
+	return (await (await ff(`/api/gateway/ru/status`)).json()) as RuResult
 }
