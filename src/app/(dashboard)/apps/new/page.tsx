@@ -8,13 +8,13 @@ import { showNotification } from "@mantine/notifications"
 import { valibotResolver } from "mantine-form-valibot-resolver"
 import { useRouter } from "next/navigation"
 import { useCallback } from "react"
-import { type Input, minLength, object, string } from "valibot"
+import * as v from "valibot"
 
-const schema = object({
-	name: string([minLength(1)]),
+const schema = v.object({
+	name: v.pipe(v.string(), v.minLength(1)),
 })
 
-type FormData = Input<typeof schema>
+type FormData = v.InferInput<typeof schema>
 
 export default function Page() {
 	const form = useForm<FormData>({

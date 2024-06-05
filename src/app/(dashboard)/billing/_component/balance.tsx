@@ -28,7 +28,7 @@ import { openConfirmModal } from "@mantine/modals"
 import { IconExclamationCircle } from "@tabler/icons-react"
 import { valibotResolver } from "mantine-form-valibot-resolver"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { Input, maxValue, minValue, number, object } from "valibot"
+import * as v from "valibot"
 import { formatUnits, parseUnits } from "viem"
 
 export function Balance() {
@@ -126,16 +126,17 @@ function DepositModal({
 
 	const formSchema = useMemo(
 		() =>
-			object({
-				amount: number([
-					minValue(0),
-					maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
-				]),
+			v.object({
+				amount: v.pipe(
+					v.number(),
+					v.minValue(0),
+					v.maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
+				),
 			}),
 		[maxBalance],
 	)
 
-	const form = useForm<Input<typeof formSchema>>({
+	const form = useForm<v.InferInput<typeof formSchema>>({
 		initialValues: {
 			amount: 0,
 		},
@@ -149,7 +150,7 @@ function DepositModal({
 	const deposit = useRss3Deposit(requestedAmount)
 
 	const handleDeposit = useCallback(
-		(values: Input<typeof formSchema>) => {
+		(values: v.InferInput<typeof formSchema>) => {
 			if (
 				typeof rss3.data === "undefined" ||
 				typeof allowance.data === "undefined"
@@ -245,16 +246,17 @@ function WithdrawModal({
 
 	const formSchema = useMemo(
 		() =>
-			object({
-				amount: number([
-					minValue(0),
-					maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
-				]),
+			v.object({
+				amount: v.pipe(
+					v.number(),
+					v.minValue(0),
+					v.maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
+				),
 			}),
 		[maxBalance],
 	)
 
-	const form = useForm<Input<typeof formSchema>>({
+	const form = useForm<v.InferInput<typeof formSchema>>({
 		initialValues: {
 			amount: 0,
 		},
@@ -275,7 +277,7 @@ function WithdrawModal({
 	}, [handleClose, withdraw.isSuccess])
 
 	const handleWithdraw = useCallback(
-		(values: Input<typeof formSchema>) => {
+		(values: v.InferInput<typeof formSchema>) => {
 			openConfirmModal({
 				centered: true,
 				title: "Please confirm your action",

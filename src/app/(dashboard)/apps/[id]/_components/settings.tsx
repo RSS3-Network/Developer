@@ -24,7 +24,7 @@ import { IconCheck, IconCopy } from "@tabler/icons-react"
 import { valibotResolver } from "mantine-form-valibot-resolver"
 import { notFound } from "next/navigation"
 import { useCallback, useEffect } from "react"
-import { type Input, minLength, object, string } from "valibot"
+import * as v from "valibot"
 import { HttpRequestError } from "viem"
 
 export function Settings({
@@ -54,11 +54,11 @@ export function Settings({
 	)
 }
 
-const nameSchema = object({
-	name: string([minLength(1)]),
+const nameSchema = v.object({
+	name: v.pipe(v.string(), v.minLength(1)),
 })
 
-type NameFormData = Input<typeof nameSchema>
+type NameFormData = v.InferInput<typeof nameSchema>
 
 function NameForm({ id, name }: { id: string; name?: string }) {
 	const nameForm = useForm<NameFormData>({
