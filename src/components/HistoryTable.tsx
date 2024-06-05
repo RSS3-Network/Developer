@@ -5,6 +5,7 @@ import type {
 	useGetHistoryDeposit,
 	useGetHistoryWithdrawal,
 } from "@/data/gateway/hooks"
+import { rss3Chain } from "@/lib/wagmi/chain"
 import { Skeleton, Table, Text } from "@mantine/core"
 import { Pagination } from "@mantine/core"
 import Link from "next/link"
@@ -44,7 +45,7 @@ export default function HistoryTable({
 						<Table.Td>{deposit.amount}</Table.Td>
 						<Table.Td>
 							<Link
-								href={`https://sepolia.etherscan.io/tx/${deposit.tx_hash}`}
+								href={`${rss3Chain.blockExplorers.default.url}/tx/${deposit.tx_hash}`}
 								// href={`https://${TESTNET ? "sepolia." : ""}etherscan.io/tx/${
 								//   deposit.tx_hash
 								// }`}
