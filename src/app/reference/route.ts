@@ -23,7 +23,7 @@ export const GET = async () => {
 	content = JSON.stringify(content, null, 2)
 
 	return ApiReference({
-		theme: "kepler",
+		theme: "bluePlanet",
 		metaData: {
 			title: "RSS3 Gateway API Reference",
 			description: "The RSS3 Gateway API Reference",
