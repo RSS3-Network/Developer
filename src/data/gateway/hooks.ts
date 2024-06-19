@@ -221,10 +221,15 @@ export function useGetKeys() {
 export function qk_getCurrentRequestWithdrawal() {
 	return ["requestWithdrawal"]
 }
-export function useGetCurrentRequestWithdrawal() {
+export function useGetCurrentRequestWithdrawal({
+	enabled,
+}: {
+	enabled?: boolean
+} = {}) {
 	return useQuery({
 		queryKey: qk_getCurrentRequestWithdrawal(),
 		queryFn: () => getCurrentRequestWithdraw(),
+		enabled,
 	})
 }
 

@@ -6,12 +6,14 @@ import {
 	useRss3Allowance,
 	useRss3Balance,
 	useRss3Deposit,
+	useSwitchCorrectChain,
 } from "@/data/contracts/hooks"
 import {
 	useCancelRequestWithdrawal,
 	useGetCurrentRequestWithdrawal,
 	useRequestWithdrawal,
 } from "@/data/gateway/hooks"
+import { rss3Chain } from "@/lib/wagmi/chain"
 import {
 	Anchor,
 	Button,
@@ -143,6 +145,11 @@ function DepositModal({
 		validate: valibotResolver(formSchema),
 	})
 
+	// check if the chain is correct
+	const switchCorrectChain = useSwitchCorrectChain({
+		chainId: rss3Chain.id,
+	})
+
 	const allowance = useRss3Allowance()
 
 	const requestedAmount = parseUnits(form.values.amount.toString(), 18)
@@ -158,12 +165,24 @@ function DepositModal({
 				return
 			}
 
-			// deposit
-			if (deposit.simulate.data?.request) {
-				deposit.contractWrite.writeContract(deposit.simulate.data.request)
+			if (!switchCorrectChain.data) {
+				switchCorrectChain.switchChain()
+				return
 			}
+
+			// deposit
+			if (!deposit.checkSimulate.check()) return
+
+			deposit.contractWrite.writeContract(deposit.simulate.data!.request)
 		},
-		[deposit, allowance.data, rss3.data],
+		[
+			rss3.data,
+			allowance.data,
+			switchCorrectChain,
+			deposit.checkSimulate,
+			deposit.contractWrite,
+			deposit.simulate.data,
+		],
 	)
 
 	const handleClose = useCallback(() => {
@@ -216,7 +235,8 @@ function DepositModal({
 							(deposit.contractWrite.data &&
 								deposit.waitForTransaction.isPending) ||
 							rss3.isPending ||
-							allowance.isPending
+							allowance.isPending ||
+							deposit.simulate.isFetching
 						}
 						disabled={!form.values.amount}
 					>
@@ -265,16 +285,16 @@ function WithdrawModal({
 
 	const withdraw = useRequestWithdrawal()
 
-	const handleClose = useCallback(() => {
+	const handleClose = () => {
 		form.reset()
 		onClose()
-	}, [form, onClose])
+	}
 
 	useEffect(() => {
 		if (withdraw.isSuccess) {
 			handleClose()
 		}
-	}, [handleClose, withdraw.isSuccess])
+	}, [withdraw.isSuccess])
 
 	const handleWithdraw = useCallback(
 		(values: v.InferInput<typeof formSchema>) => {

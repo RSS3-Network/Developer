@@ -1,15 +1,15 @@
 import {
 	createUseReadContract,
-	createUseWriteContract,
 	createUseSimulateContract,
 	createUseWatchContractEvent,
+	createUseWriteContract,
 } from "wagmi/codegen"
 
 import {
 	createReadContract,
-	createWriteContract,
 	createSimulateContract,
 	createWatchContractEvent,
+	createWriteContract,
 } from "wagmi/codegen"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,6 @@ export const billingAbi = [
 		],
 		name: "InvalidEpochNumber",
 	},
-	{ type: "error", inputs: [], name: "SubmissionIntervalNotElapsed" },
 	{
 		type: "event",
 		anonymous: false,
@@ -339,6 +338,13 @@ export const billingAbi = [
 			{ name: "account", internalType: "address", type: "address" },
 		],
 		name: "revokeRole",
+		outputs: [],
+		stateMutability: "nonpayable",
+	},
+	{
+		type: "function",
+		inputs: [{ name: "epoch", internalType: "uint256", type: "uint256" }],
+		name: "setEpoch",
 		outputs: [],
 		stateMutability: "nonpayable",
 	},
@@ -789,6 +795,18 @@ export const useWriteBillingRevokeRole = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"setEpoch"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useWriteBillingSetEpoch = /*#__PURE__*/ createUseWriteContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "setEpoch",
+})
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
  * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
@@ -901,6 +919,19 @@ export const useSimulateBillingRevokeRole =
 		abi: billingAbi,
 		address: billingAddress,
 		functionName: "revokeRole",
+	})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"setEpoch"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const useSimulateBillingSetEpoch =
+	/*#__PURE__*/ createUseSimulateContract({
+		abi: billingAbi,
+		address: billingAddress,
+		functionName: "setEpoch",
 	})
 
 /**
@@ -1551,6 +1582,18 @@ export const writeBillingRevokeRole = /*#__PURE__*/ createWriteContract({
 })
 
 /**
+ * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"setEpoch"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const writeBillingSetEpoch = /*#__PURE__*/ createWriteContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "setEpoch",
+})
+
+/**
  * Wraps __{@link writeContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"withdrawTokens"`
  *
  * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
@@ -1655,6 +1698,18 @@ export const simulateBillingRevokeRole = /*#__PURE__*/ createSimulateContract({
 	abi: billingAbi,
 	address: billingAddress,
 	functionName: "revokeRole",
+})
+
+/**
+ * Wraps __{@link simulateContract}__ with `abi` set to __{@link billingAbi}__ and `functionName` set to `"setEpoch"`
+ *
+ * - [__View Contract on Rss3 Vsl Sepolia Testnet Rss3 Vsl Sepolia Testnet Scan__](https://scan.testnet.rss3.io/address/0xdDA34Ad1a90d9EA830cf9fC59DC5eBB3D864BE4E)
+ * - [__View Contract on Rss3 Vsl Mainnet Rss3 Vsl Mainnet Scan__](https://scan.rss3.io/address/0x0000000000000000000000000000000000000000)
+ */
+export const simulateBillingSetEpoch = /*#__PURE__*/ createSimulateContract({
+	abi: billingAbi,
+	address: billingAddress,
+	functionName: "setEpoch",
 })
 
 /**

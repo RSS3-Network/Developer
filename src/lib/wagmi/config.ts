@@ -18,10 +18,10 @@ export const config = createConfig(
 			storage: cookieStorage,
 		}),
 		transports: {
-			[mainnet.id]: http(),
-			[sepolia.id]: http(),
-			[rss3.id]: http(),
-			[rss3Sepolia.id]: http(),
+			[mainnet.id]: http(env.NEXT_PUBLIC_MAINNET_RPC_URL, { batch: true }),
+			[sepolia.id]: http(env.NEXT_PUBLIC_SEPOLIA_RPC_URL, { batch: true }),
+			[rss3.id]: http(undefined, { batch: true }),
+			[rss3Sepolia.id]: http(undefined, { batch: true }),
 		},
 	}),
 )

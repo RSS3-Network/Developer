@@ -1,8 +1,9 @@
 "use client"
 
-import type {
-	useGetHistoryCollection,
-	useGetHistoryDeposit,
+import {
+	useGetCurrentRequestWithdrawal,
+	type useGetHistoryCollection,
+	type useGetHistoryDeposit,
 	useGetHistoryWithdrawal,
 } from "@/data/gateway/hooks"
 import { rss3Chain } from "@/lib/wagmi/chain"
@@ -26,6 +27,10 @@ export default function HistoryTable({
 	const historyDeposit = requestFunction({
 		page: activePage,
 		limit: 5,
+	})
+
+	const currentRequestWithdrawal = useGetCurrentRequestWithdrawal({
+		enabled: requestFunction === useGetHistoryWithdrawal,
 	})
 
 	useEffect(() => {
@@ -58,8 +63,26 @@ export default function HistoryTable({
 					</Table.Tr>
 				)),
 			)
+
+			if (
+				requestFunction === useGetHistoryWithdrawal &&
+				currentRequestWithdrawal.data
+			) {
+				setRows((rows) => [
+					<Table.Tr key="currentRequestWithdrawal">
+						<Table.Td>(Pending)</Table.Td>
+						<Table.Td>{currentRequestWithdrawal.data.amount}</Table.Td>
+						<Table.Td>(Pending)</Table.Td>
+					</Table.Tr>,
+					...rows,
+				])
+			}
 		}
-	}, [historyDeposit.data?.list])
+	}, [
+		currentRequestWithdrawal.data,
+		historyDeposit.data?.list,
+		requestFunction,
+	])
 
 	return (
 		<Skeleton visible={historyDeposit.isLoading}>

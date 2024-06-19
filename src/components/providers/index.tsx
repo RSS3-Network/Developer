@@ -8,14 +8,14 @@ import { type PropsWithChildren } from "react"
 
 export function Providers({ children }: PropsWithChildren<{}>) {
 	return (
-		<MantineProvider>
-			<QueryProvider>
+		<QueryProvider>
+			<MantineProvider>
 				<WagmiProvider cookie={headers().get("cookie")}>
 					<JotaiProvider>
 						<MotionProvider>{children}</MotionProvider>
 					</JotaiProvider>
 				</WagmiProvider>
-			</QueryProvider>
-		</MantineProvider>
+			</MantineProvider>
+		</QueryProvider>
 	)
 }
