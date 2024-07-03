@@ -66,7 +66,8 @@ export default function HistoryTable({
 
 			if (
 				requestFunction === useGetHistoryWithdrawal &&
-				currentRequestWithdrawal.data
+				currentRequestWithdrawal.data &&
+				currentRequestWithdrawal.data.amount !== 0
 			) {
 				setRows((rows) => [
 					<Table.Tr key="currentRequestWithdrawal">
