@@ -1,75 +1,87 @@
 "use client"
 
-import { useDeleteKey } from "@/data/gateway/hooks"
-import { Alert, Button, Text, Title } from "@mantine/core"
-import { openConfirmModal } from "@mantine/modals"
+import { useDeleteKey, useGetKey } from "@/data/gateway/hooks"
+import { Button, Input, Text, Title } from "@mantine/core"
+import { closeAllModals, openModal } from "@mantine/modals"
 import { showNotification } from "@mantine/notifications"
-import { IconAlertCircleFilled } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 
-export function Delete({ id }: { id: string }) {
+function DeleteConfirmation({
+	id,
+	onSuccess,
+}: { id: string; onSuccess?: () => void }) {
 	const deleteKey = useDeleteKey()
 	const router = useRouter()
+	const key = useGetKey({ id })
 
+	const [value, setValue] = useState("")
+
+	return (
+		<div>
+			<Text size="sm">
+				Once you delete your app, there is no way to undo it. Please type the
+				name of your app{" "}
+				<span className="font-mono font-bold">{key.data?.name}</span> to
+				confirm.
+			</Text>
+			<Input
+				mt="sm"
+				placeholder={key.data?.name}
+				value={value}
+				onChange={(event) => setValue(event.currentTarget.value)}
+			/>
+
+			<Button
+				color="red"
+				mt="md"
+				onClick={() => {
+					deleteKey.mutate(
+						{ id },
+						{
+							onError: (error, variables, context) => {
+								showNotification({
+									color: "red",
+									title: "Error",
+									message: error.message,
+								})
+							},
+							onSuccess: () => {
+								router.push("/apps")
+								onSuccess?.()
+							},
+						},
+					)
+				}}
+				loading={deleteKey.isPending}
+				disabled={value !== key.data?.name}
+			>
+				Confirm Deletion
+			</Button>
+		</div>
+	)
+}
+
+export function Delete({ id }: { id: string }) {
 	const handleDelete = useCallback(() => {
-		openConfirmModal({
+		openModal({
 			centered: true,
 			title: "Please confirm your action",
 			children: (
-				<Text size="sm">
-					Once you delete your app, there is no way to undo it. Please make sure
-					you are certain before proceeding.
-				</Text>
+				<DeleteConfirmation id={id} onSuccess={() => closeAllModals()} />
 			),
-			confirmProps: {
-				color: "red",
-			},
-			labels: { confirm: "Yes! Delete It!", cancel: "Cancel" },
-			onConfirm: () => {
-				deleteKey.mutate(
-					{ id },
-					{
-						onError: (error, variables, context) => {
-							showNotification({
-								color: "red",
-								title: "Error",
-								message: error.message,
-							})
-						},
-						onSuccess: () => {
-							router.push("/apps")
-						},
-					},
-				)
-			},
 		})
-	}, [id, router, deleteKey])
+	}, [id])
 
 	return (
 		<>
 			<Title order={3}>Delete</Title>
-			{/*
-      <Alert
-        variant="light"
-        color="red"
-        title="Danger"
-        icon={<IconAlertCircleFilled />}
-      >
-        Once you delete your app, there is no way to undo it. Please make sure
-        you are certain before proceeding.
-      </Alert> */}
 
 			<Text mt="md" c="dimmed">
 				Click the button below to delete your app forever.
 			</Text>
 
-			<Button
-				mt="md"
-				color="red"
-				onClick={handleDelete}
-				loading={deleteKey.isPending}
-			>
+			<Button mt="md" color="red" onClick={handleDelete}>
 				Delete
 			</Button>
 		</>
