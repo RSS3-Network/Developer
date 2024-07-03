@@ -14,7 +14,7 @@
 
 # RSS3 Developer
 
-> Build with Billions of Open Information
+> Build with the Open Web
 
 ## License
 
