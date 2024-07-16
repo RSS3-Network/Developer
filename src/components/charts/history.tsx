@@ -62,7 +62,7 @@ export default function HistoryChart({ id }: { id?: string }) {
 						isLoading={ru.isPending}
 					/>
 					<StatItem
-						label="Total RU"
+						label="Total RUs"
 						tooltip="The RSS3 Unit (RU) is a measure of resources used by your apps."
 						value={totalRu}
 						isLoading={ru.isPending}
@@ -76,7 +76,7 @@ export default function HistoryChart({ id }: { id?: string }) {
 						isLoading={appHistory.isPending}
 					/>
 					<StatItem
-						label="RU (Current Epoch)"
+						label="RUs (Current Epoch)"
 						tooltip="RUs consumed in the current Epoch."
 						value={totalRuInRange}
 						isLoading={appHistory.isPending}
@@ -95,7 +95,7 @@ export default function HistoryChart({ id }: { id?: string }) {
 						isLoading={appHistory.isPending}
 					/>
 					<StatItem
-						label="RU (Selected Range)"
+						label="RUs (Selected Range)"
 						tooltip="RUs consumed in the selected range."
 						value={totalRuInRange}
 						isLoading={appHistory.isPending}
