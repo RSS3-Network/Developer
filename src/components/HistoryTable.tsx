@@ -22,7 +22,6 @@ export default function HistoryTable({
 }) {
 	const [activePage, setActivePage] = useState(1)
 	const [maxPage, setMaxPage] = useState(0)
-	const [rows, setRows] = useState<React.ReactNode[]>([])
 
 	const historyDeposit = requestFunction({
 		page: activePage,
@@ -39,55 +38,9 @@ export default function HistoryTable({
 		}
 	}, [historyDeposit?.data?.page_max, maxPage])
 
-	useEffect(() => {
-		if (historyDeposit.data?.list) {
-			setRows(
-				historyDeposit.data.list.map((deposit) => (
-					<Table.Tr key={deposit.index}>
-						<Table.Td>
-							{new Date(deposit.block_timestamp).toLocaleString()}
-						</Table.Td>
-						<Table.Td>{deposit.amount}</Table.Td>
-						<Table.Td>
-							<Link
-								href={`${rss3Chain.blockExplorers.default.url}/tx/${deposit.tx_hash}`}
-								// href={`https://${TESTNET ? "sepolia." : ""}etherscan.io/tx/${
-								//   deposit.tx_hash
-								// }`}
-								className="underline"
-								target="_blank"
-							>
-								{deposit.tx_hash.slice(0, 7)}...{deposit.tx_hash.slice(-5)}
-							</Link>
-						</Table.Td>
-					</Table.Tr>
-				)),
-			)
-
-			if (
-				requestFunction === useGetHistoryWithdrawal &&
-				currentRequestWithdrawal.data &&
-				currentRequestWithdrawal.data.amount !== 0
-			) {
-				setRows((rows) => [
-					<Table.Tr key="currentRequestWithdrawal">
-						<Table.Td>(Pending)</Table.Td>
-						<Table.Td>{currentRequestWithdrawal.data.amount}</Table.Td>
-						<Table.Td>(Pending)</Table.Td>
-					</Table.Tr>,
-					...rows,
-				])
-			}
-		}
-	}, [
-		currentRequestWithdrawal.data,
-		historyDeposit.data?.list,
-		requestFunction,
-	])
-
 	return (
 		<Skeleton visible={historyDeposit.isLoading}>
-			{rows.length ? (
+			{historyDeposit.data?.list ? (
 				<Table verticalSpacing="md" striped highlightOnHover>
 					<Table.Thead>
 						<Table.Tr>
@@ -96,7 +49,37 @@ export default function HistoryTable({
 							<Table.Th>Transaction</Table.Th>
 						</Table.Tr>
 					</Table.Thead>
-					<Table.Tbody>{rows}</Table.Tbody>
+					<Table.Tbody>
+						{requestFunction === useGetHistoryWithdrawal &&
+							currentRequestWithdrawal.data &&
+							currentRequestWithdrawal.data.amount !== 0 && (
+								<Table.Tr key="currentRequestWithdrawal">
+									<Table.Td>(Pending)</Table.Td>
+									<Table.Td>{currentRequestWithdrawal.data.amount}</Table.Td>
+									<Table.Td>(Pending)</Table.Td>
+								</Table.Tr>
+							)}
+						{historyDeposit.data.list.map((deposit) => (
+							<Table.Tr key={deposit.index}>
+								<Table.Td>
+									{new Date(deposit.block_timestamp).toLocaleString()}
+								</Table.Td>
+								<Table.Td>{deposit.amount}</Table.Td>
+								<Table.Td>
+									<Link
+										href={`${rss3Chain.blockExplorers.default.url}/tx/${deposit.tx_hash}`}
+										// href={`https://${TESTNET ? "sepolia." : ""}etherscan.io/tx/${
+										//   deposit.tx_hash
+										// }`}
+										className="underline"
+										target="_blank"
+									>
+										{deposit.tx_hash.slice(0, 7)}...{deposit.tx_hash.slice(-5)}
+									</Link>
+								</Table.Td>
+							</Table.Tr>
+						))}
+					</Table.Tbody>
 				</Table>
 			) : (
 				<Text c="dimmed">No Data</Text>

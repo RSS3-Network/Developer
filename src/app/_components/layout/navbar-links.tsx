@@ -7,6 +7,7 @@ import {
 	IconChartPie2,
 	IconHome,
 } from "@tabler/icons-react"
+import { useModal, useSIWE } from "connectkit"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import classes from "./navbar-links.module.css"
@@ -77,10 +78,11 @@ export function NavbarLinks() {
 }
 
 function useProtected() {
-	// const { isSignedIn } = useSIWE();
-	// const { setOpen } = useModal();
-	return {
-		isSignedIn: true,
-		setOpen: (a: any) => {},
-	}
+	const { isSignedIn } = useSIWE()
+	const { setOpen } = useModal()
+	return { isSignedIn, setOpen }
+	// return {
+	// 	isSignedIn: true,
+	// 	setOpen: (a: any) => {},
+	// }
 }
