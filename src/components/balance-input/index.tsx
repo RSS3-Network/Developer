@@ -21,7 +21,7 @@ export function BalanceInput({
 				: props.value > _safeMax
 					? `Value must be less than ${_safeMax}`
 					: props.value > _max
-						? `Insufficient balance (max: ${_max})`
+						? `Insufficient balance (current balance: ${_max})`
 						: undefined
 
 	return (

@@ -132,7 +132,10 @@ function DepositModal({
 				amount: v.pipe(
 					v.number(),
 					v.minValue(0),
-					v.maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
+					v.maxValue(
+						maxBalance,
+						`Insufficient balance (current balance: ${maxBalance})`,
+					),
 				),
 			}),
 		[maxBalance],
@@ -270,7 +273,10 @@ function WithdrawModal({
 				amount: v.pipe(
 					v.number(),
 					v.minValue(0),
-					v.maxValue(maxBalance, `Insufficient balance (max: ${maxBalance})`),
+					v.maxValue(
+						maxBalance,
+						`Insufficient balance (current balance: ${maxBalance})`,
+					),
 				),
 			}),
 		[maxBalance],
