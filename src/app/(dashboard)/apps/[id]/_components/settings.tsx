@@ -86,7 +86,7 @@ function NameForm({ id, name }: { id: string; name?: string }) {
 				}),
 			)}
 		>
-			<TextInput mt="md" label="Name" {...nameForm.getInputProps("name")} />
+			<TextInput mt="md" label="App Name" {...nameForm.getInputProps("name")} />
 
 			<Button mt="md" type="submit" loading={updateKey.isPending}>
 				Save
@@ -104,8 +104,7 @@ function KeyForm({ id, passkey }: { id: string; passkey?: string }) {
 			title: "Please confirm your action",
 			children: (
 				<Text size="sm">
-					Once you regenerate your app key, the old key will be invalidated.
-					Please make sure you are certain before proceeding.
+					Once you regenerate the API key, the old key will stop working.
 				</Text>
 			),
 			confirmProps: {
@@ -122,7 +121,7 @@ function KeyForm({ id, passkey }: { id: string; passkey?: string }) {
 		<>
 			<PasswordInput
 				mt="md"
-				label="Key"
+				label="API Key"
 				value={passkey || ""}
 				readOnly
 				leftSectionPointerEvents="all"
@@ -157,7 +156,7 @@ function KeyForm({ id, passkey }: { id: string; passkey?: string }) {
 				onClick={handleRegenerate}
 				loading={reassignKey.isPending}
 			>
-				Regenerate Key
+				Regenerate API Key
 			</Button>
 		</>
 	)

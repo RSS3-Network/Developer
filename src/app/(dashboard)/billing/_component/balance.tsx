@@ -336,7 +336,7 @@ function WithdrawModal({
 			onClose={handleClose}
 			title={
 				<Group gap="xs">
-					<Text>Withdraw Deposited $RSS3</Text>
+					<Text>Withdraw from Balance</Text>
 					<Tooltip
 						maw={300}
 						multiline
@@ -348,11 +348,11 @@ function WithdrawModal({
 								The final amount you receive will include deductions for the
 								following:
 								<br />
-								1. Ethereum Gas fees (converted to $RSS3), determined by the
-								busyness of the Ethereum blockchain.
+								1. Ethereum Gas fees (in $RSS3), determined by the Ethereum
+								blockchain's network condition.
 								<br />
-								2. RSS3 Network usage fees that incurred after initiating the
-								withdrawal request, if any.
+								2. Any usage fees incurred after initiating this withdrawal
+								request.
 							</>
 						}
 					>
