@@ -14,7 +14,7 @@
 
 # RSS3 Developer
 
-> Build with the Open Web
+> Build the Open Web
 
 ## License
 

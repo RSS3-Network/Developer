@@ -42,8 +42,8 @@ export function Balance() {
 			<Group>
 				<Stack gap="xs">
 					<Group gap="xs">
-						<Text c="dimmed">Deposited $RSS3</Text>
-						<Tooltip label="Deposited $RSS3 can be used to pay for API calls. You can withdraw your $RSS3 at any time.">
+						<Text c="dimmed">Balance</Text>
+						<Tooltip label="Your $RSS3 balance is used to cover request fees. You can withdraw them at any time.">
 							<Text c="dimmed">
 								<IconExclamationCircle />
 							</Text>
@@ -336,7 +336,7 @@ function WithdrawModal({
 						multiline
 						label={
 							<>
-								Withdrawal requests are processed at the end of each epoch
+								Withdrawal requests are processed at the end of each Epoch
 								(every 18 hours).
 								<br />
 								The final amount you receive will include deductions for the

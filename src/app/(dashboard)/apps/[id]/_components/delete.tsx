@@ -20,8 +20,7 @@ function DeleteConfirmation({
 	return (
 		<div>
 			<Text size="sm">
-				Once you delete your app, there is no way to undo it. Please type the
-				name of your app{" "}
+				There is no way to undo a deletion. Please type the name of your app{" "}
 				<span className="font-mono font-bold">{key.data?.name}</span> to
 				confirm.
 			</Text>

@@ -63,21 +63,21 @@ export default function HistoryChart({ id }: { id?: string }) {
 					/>
 					<StatItem
 						label="Total RU"
-						tooltip="The RSS3 Unit is a computing unit that is directly used for billing."
+						tooltip="The RSS3 Unit (RU) is a measure of resources used by your apps."
 						value={totalRu}
 						isLoading={ru.isPending}
 					/>
 				</Group>
 				<Group>
 					<StatItem
-						label="Requests This Epoch"
-						tooltip="This will be settled when this epoch ends."
+						label="Requests (Current Epoch)"
+						tooltip="Requests made in the current Epoch."
 						value={totalRequestsInRange}
 						isLoading={appHistory.isPending}
 					/>
 					<StatItem
-						label="RU This Epoch"
-						tooltip="The RSS3 Unit is a computing unit that is directly used for billing. This will be settled when this epoch ends."
+						label="RU (Current Epoch)"
+						tooltip="RUs consumed in the current Epoch."
 						value={totalRuInRange}
 						isLoading={appHistory.isPending}
 					/>
@@ -89,13 +89,14 @@ export default function HistoryChart({ id }: { id?: string }) {
 			<Group justify="space-between">
 				<Group>
 					<StatItem
-						label="Requests In Range"
+						label="Requests (Selected Range)"
+						tooltip="Requests made in the selected range."
 						value={totalRequestsInRange}
 						isLoading={appHistory.isPending}
 					/>
 					<StatItem
-						label="RU In Range"
-						tooltip="The RSS3 Unit is a computing unit that is directly used for billing."
+						label="RU (Selected Range)"
+						tooltip="RUs consumed in the selected range."
 						value={totalRuInRange}
 						isLoading={appHistory.isPending}
 					/>

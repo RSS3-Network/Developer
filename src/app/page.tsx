@@ -17,7 +17,7 @@ export default function Page() {
 			{/* <FirstScreenBg /> */}
 			<div className="flex flex-col items-center justify-center space-y-10">
 				<Title fw="300" order={1} size="3.75rem" ta="center">
-					Build with the Open Web
+					Build the Open Web
 				</Title>
 				<ConnectButton connectText="BUILD NOW →" />
 			</div>
